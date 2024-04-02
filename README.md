@@ -1,7 +1,7 @@
 # CSE360
 Group 32's CSE360 Spring '24 Project Repository
 
-Used Technology:
+Used Technology:\n
   JavaFX
   File I/O
 
