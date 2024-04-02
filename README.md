@@ -1,5 +1,7 @@
 # CSE360
-Group 32's CSE360 Spring '24 Project Repository
+[ Group 32 ]  
+CSE360 Spring '24  
+Project Repository  
   
 Used Technology:  
 &emsp;- JavaFX  
