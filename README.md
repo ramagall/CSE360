@@ -6,7 +6,7 @@ Used Technology:
   File I/O  
 
 Contributers:  
-  Rodolfo Magallanes Barreras  
+&nbsp;Rodolfo Magallanes Barreras  
   Carson Ridgeway  
   Ishana Jain  
   Matthew Hernandez  
