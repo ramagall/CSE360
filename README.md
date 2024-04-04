@@ -16,3 +16,7 @@ Contributers:
 
 Project Description:  
 &emsp;// go here  
+
+*OVERACHIEVER PROBLEM*
+First 950 lines of code were competed prior to April 1, 2024.
+Even contribution between all contributors.
