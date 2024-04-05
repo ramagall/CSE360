@@ -2,7 +2,6 @@ package TheProject.Views;
 
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -42,10 +41,27 @@ public class LoginView extends VBox {
 	    RadioButton selectPatient = new RadioButton();
 	    Label selectP = new Label("Patient");
 	    
-	    loginButton.setOnAction(e -> { // We will fill this out after working through the create account page.
+	    loginButton.setOnAction(e -> { 
+	    	// Once File I/O is implemented we will check if the username and password are valid.
+	        
+	        if (selectDoctor.isSelected()) {
+	        	sceneViewer.changeView(new DoctorView(sceneViewer));
+	        }
+	        
+	        else if (selectNurse.isSelected()) {
+	        	sceneViewer.changeView(new NurseView(sceneViewer));
+	        }
+	        
+	        else if (selectPatient.isSelected()) {
+	        	sceneViewer.changeView(new PatientView(sceneViewer));
+	          }
+
+	        else {
+	          messageLabel.setText("Please select user type!");
+	        }
 	      });
 
-	    // Create Account buttons
+	    // Create Account button
 	    Button createButton = new Button("Create Account");
 	    
 	    createButton.setOnAction(e -> { 
