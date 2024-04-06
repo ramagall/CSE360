@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.Scanner;
 
 public class FileHandler {
-	
-	public static AttemptedLoad loadFile(String location) {
+	//Use the loadFile class to UserRecord data.
+	public static AttemptedLoad loadFile(String location) { 
 		AttemptedLoad loadResult = new AttemptedLoad();
 		File file = new File(location);
 		try {
@@ -25,7 +25,7 @@ public class FileHandler {
 		
 		return loadResult;
 	}
-	
+	//Use this class to get a specific file.
 	public static File getFile (String fileName, String location) {
 		File file = new File(location + "/" + fileName + ".txt");
 		
@@ -39,7 +39,7 @@ public class FileHandler {
 		
 		return file;
 	}
-	
+	//Use this class to write a single line to a file.
 	public static void writeToFile(File file, String string) {
 		try {
 			FileWriter fileWriter = new FileWriter(file);
@@ -51,7 +51,7 @@ public class FileHandler {
 			throw new RuntimeException(e);
 		}
 	}
-	
+	//Use this class to write an array of strings to a file.
 	public static void writeToFile(File file, String[] stringArray) {
 		try {
 			BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file));
