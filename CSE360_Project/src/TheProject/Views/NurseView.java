@@ -24,7 +24,7 @@ public class NurseView extends BorderPane {
     private TextField searchedPatientFieldNV;
     private TabPane patientDetailsTabsNV;
     private ListView<String> inboxNV;
-
+//
     public NurseView(SceneViewer sceneViewer, NurseRecords nurseRecords) {
         super();
 
