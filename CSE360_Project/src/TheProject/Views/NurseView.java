@@ -19,97 +19,134 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class NurseView extends BorderPane{
-	public NurseView(SceneViewer sceneViewer, PatientRecords patientRecords){
-		super();
-		
-	    Label welcomeNV = new Label("Nurse View.");
-	    HBox titleBoxNV = new HBox(welcomeNV);
+public class NurseView extends BorderPane {
+    private ListView<String> patientListNV;
+    private TextField searchedPatientFieldNV;
+    private TabPane patientDetailsTabsNV;
+    private ListView<String> inboxNV;
 
-	    //Patients list
-	    ListView<String> patientListNV = new ListView<>();
-	    patientListNV.getItems().addAll("Patient 1", "Patient 2", "Patient 3");
-	    TextField searchedPatientFieldNV = new TextField();
-	    searchedPatientFieldNV.setPromptText("Search Patient");
-	    Button searchPatientNV = new Button("Search");
-	    Button nurseLogout = new Button("Logout");
-	    VBox searchPatientBoxNV = new VBox(searchedPatientFieldNV, patientListNV,  searchPatientNV, nurseLogout);
+    public NurseView(SceneViewer sceneViewer, PatientRecords patientRecord) {
+        super();
 
+        Label welcomeNV = new Label("Nurse View.");
+        HBox titleBoxNV = new HBox(welcomeNV);
 
-	    //Tabs for patients - center
-	    TabPane patientDetailsTabsNV = new TabPane();
-	    Tab examinationTabNV = new Tab("Exam results");
-	    examinationTabNV.setClosable(false);
-	    Tab patientHistoryTabNV = new Tab("Patient History");
-	    patientHistoryTabNV.setClosable(false);
-	    patientDetailsTabsNV.getTabs().addAll(examinationTabNV, patientHistoryTabNV);
+        // Patients list
+        patientListNV = new ListView<>();
+        patientListNV.getItems().addAll("Patient 1", "Patient 2", "Patient 3");
+        searchedPatientFieldNV = new TextField();
+        searchedPatientFieldNV.setPromptText("Search Patient");
+        Button searchPatientNV = new Button("Search");
+        Button nurseLogout = new Button("Logout");
+        VBox searchPatientBoxNV = new VBox(searchedPatientFieldNV, patientListNV, searchPatientNV, nurseLogout);
 
-	    //Patients - Inbox and Send Message
-	    TabPane emailTabPaneNV = new TabPane();
+        // Tabs for patients - center
+        patientDetailsTabsNV = new TabPane();
 
-	    //Inbox
-	    Tab inboxTabNV = new Tab("Inbox");
-	    inboxTabNV.setClosable(false);
-	    ListView<String> inboxNV = new ListView<>();
-	    inboxNV.getItems().addAll("Message 1", "Message 2", "Message 3");
-	    inboxTabNV.setContent(inboxNV);
+        // Inbox and Send Message
+        TabPane emailTabPaneNV = new TabPane();
 
-	    //Send a Message
-	    Tab sendMessageTabNV = new Tab("Send a Message");
-	    sendMessageTabNV.setClosable(false);
+        // Inbox
+        Tab inboxTabNV = new Tab("Inbox");
+        inboxTabNV.setClosable(false);
+        inboxNV = new ListView<>();
+        inboxNV.getItems().addAll("Message 1", "Message 2", "Message 3");
+        inboxTabNV.setContent(inboxNV);
 
-	    emailTabPaneNV.getTabs().addAll(inboxTabNV, sendMessageTabNV);
+        // Send a Message
+        Tab sendMessageTabNV = new Tab("Send a Message");
+        sendMessageTabNV.setClosable(false);
+        VBox sendMessageContent = new VBox();
+        sendMessageContent.getChildren().addAll(new Label("Sending message feature under development"));
+        sendMessageTabNV.setContent(sendMessageContent);
 
-	    TextField typeMessageNV = new TextField();
-	    typeMessageNV.setPromptText("Type your message here:");
-	    Label sendAMessageToLabelNV = new Label( "Send a message to: ");
+        emailTabPaneNV.getTabs().addAll(inboxTabNV, sendMessageTabNV);
 
-	    ToggleGroup sendMessageToNV = new ToggleGroup();
+        super.setTop(titleBoxNV);
+        super.setLeft(searchPatientBoxNV);
+        super.setCenter(patientDetailsTabsNV);
+        super.setRight(emailTabPaneNV);
 
-	    RadioButton patientButtonPV = new RadioButton("Patient");
-	    patientButtonPV.setToggleGroup(sendMessageToNV);
+        nurseLogout.setOnAction(e -> {
+            sceneViewer.setLoginView();
+        });
 
-	    HBox sendMessageToNVBox = new HBox(10, patientButtonPV);
+        // Event handler for selecting a patient
+        patientListNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                updatePatientDetails(newValue);
+            }
+        });
+    }
 
-	    Label usernameSendToNV = new Label("Username:");
-	    TextField usernameSendToNVField = new TextField();
+    // Method to update patient details based on the selected patient
+    private void updatePatientDetails(String selectedPatient) {
+        // Clear previous content
+        patientDetailsTabsNV.getTabs().clear();
 
-	    HBox user_sendToNV = new HBox(10);
-	    user_sendToNV.setPadding(new Insets(20));
-	    user_sendToNV.getChildren().addAll(usernameSendToNV, usernameSendToNVField);
+        // Vitals Tab
+        Tab vitalsTabNV = new Tab("Vitals");
 
-	    Label passwordSendToNV = new Label("Password:");
-	    PasswordField passwordSendToNVField = new PasswordField();
+        // Patient Name Label
+        Label nameLabel = new Label(selectedPatient);
+        nameLabel.setStyle("-fx-font-weight: bold");
+        nameLabel.setMaxWidth(Double.MAX_VALUE);
+        nameLabel.setAlignment(javafx.geometry.Pos.CENTER);
 
-	    HBox pass_sendToNV = new HBox(10);
-	    pass_sendToNV.setPadding(new Insets(20));
-	    pass_sendToNV.getChildren().addAll(passwordSendToNV, passwordSendToNVField);
+        // Text Fields for Vitals
+        TextField weightField = new TextField();
+        weightField.setPromptText("Weight");
+        TextField temperatureField = new TextField();
+        temperatureField.setPromptText("Temperature");
+        TextField heightField = new TextField();
+        heightField.setPromptText("Height");
+        TextField bloodPressureField = new TextField();
+        bloodPressureField.setPromptText("Blood Pressure");
 
-	    Button submitNV = new Button("Submit");
+        // Button for input info
+        Button inputInfoButton = new Button("Input Info");
 
-	    HBox buttonsBoxNV = new HBox(10);
-	    buttonsBoxNV.setPadding(new Insets(20));
-	    buttonsBoxNV.getChildren().addAll(submitNV);
+        // VBox to hold all components
+        VBox vitalsContent = new VBox(50, nameLabel, weightField, temperatureField, heightField, bloodPressureField, inputInfoButton);
+        vitalsContent.setPadding(new Insets(10));
+        vitalsContent.setAlignment(javafx.geometry.Pos.TOP_CENTER);
+        vitalsTabNV.setContent(vitalsContent);
+        vitalsTabNV.setClosable(false);
+        
+        
+        /*
+        
+        this is where Input Info will save into the patient file 
+        
+        */
+        
+        
 
-	    VBox sendMessageNV = new VBox(10);
-	    sendMessageNV.setPadding(new Insets(20));
-	    sendMessageNV.getChildren().addAll(emailTabPaneNV,
-	                                       typeMessageNV, 
-	                                       sendAMessageToLabelNV, 
-	                                       sendMessageToNVBox, 
-	                                       user_sendToNV, 
-	                                       pass_sendToNV, 
-	                                       buttonsBoxNV);
+        patientDetailsTabsNV.getTabs().add(vitalsTabNV);
 
-	    sendMessageTabNV.setContent(sendMessageNV); //user_sendToNV, pass_sendToNV, buttonsBoxV
+        // Allergies Tab
+        Tab allergiesTabNV = new Tab("Allergies");
 
-	    super.setTop(titleBoxNV);
-	    super.setLeft(searchPatientBoxNV);
-	    super.setCenter(patientDetailsTabsNV);
-	    super.setRight(emailTabPaneNV);
-	    
-	    nurseLogout.setOnAction(e -> {
-	    	sceneViewer.setLoginView();
-	    });
-	}
+        // Text Field for Allergies
+        TextField allergyField = new TextField();
+        allergyField.setPromptText("Enter allergy");
+
+        // Button for inputting allergy
+        Button inputAllergyButton = new Button("Input Allergy");
+
+        // VBox to hold Allergies components
+        VBox allergiesContent = new VBox(10, allergyField, inputAllergyButton);
+        allergiesTabNV.setContent(allergiesContent);
+        allergiesTabNV.setClosable(false);
+
+        patientDetailsTabsNV.getTabs().add(allergiesTabNV);
+
+        // Placeholder for patient history information
+        Tab patientHistoryTabNV = new Tab("Patient History");
+        ListView<String> patientHistoryListView = new ListView<>();
+        patientHistoryListView.getItems().addAll("Patient history data for " + selectedPatient);
+        patientHistoryTabNV.setContent(patientHistoryListView);
+        patientHistoryTabNV.setClosable(false);
+        patientDetailsTabsNV.getTabs().add(patientHistoryTabNV);
+    }
 }
