@@ -73,9 +73,13 @@ public class LoginView extends VBox {
 	        if (name.equals("")) {
 	          messageLabel.setText("Please Enter Username");
 	        }
-
+	        
 	        else if (pass1.equals("")) {
 	          messageLabel.setText("Please Enter Password");
+	        }
+	        
+	        else if (patientRecords.patientList.containsKey(name)) {
+	        	messageLabel.setText("Username Already Exists");
 	        }
 
 	        else {
@@ -115,7 +119,5 @@ public class LoginView extends VBox {
 
 	    super.setPadding(new Insets(20));
 	    super.getChildren().addAll(initialScreen, messageLabel);
-	    
-	    
 	}
 }
