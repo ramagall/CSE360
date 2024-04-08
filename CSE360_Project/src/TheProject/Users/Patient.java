@@ -27,7 +27,7 @@ public class Patient {
 	  /* Methods */
 	  
 	  public String getPatientInfo() {
-		  return firstName + "|" + lastName + "|" + username + "|" + password + "|" + dob;
+		  return firstName + "~" + lastName + "~" + username + "~" + password + "~" + dob;
 	  }
 	  public void setFirstName(String update) {
 	    firstName = update;

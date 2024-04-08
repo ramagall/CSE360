@@ -13,7 +13,7 @@ public class FileHandler {
 			Scanner scanner = new Scanner(file);
 			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				loadResult.data.add(line.split("|"));
+				loadResult.data.add(line.split("~"));
 			}
 			
 			scanner.close();

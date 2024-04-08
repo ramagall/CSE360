@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PatientRecords {
-	String PATH = "UserRecords/Patient";
+	String PATH = "UserRecords/Patients";
 	public Map <String, Patient> patientList;
 	
 	public PatientRecords() {
@@ -19,14 +19,12 @@ public class PatientRecords {
 				continue;
 			}
 			Patient newPatient = new Patient(load.data.get(0));
-			
 			patientList.put(newPatient.getUser(), newPatient);
 		}
 	}
 	
 	public Patient searchPatient(String userName) {
-		Patient searchResult = patientList.get(userName);
-		return searchResult;
+		return patientList.get(userName);
 	}
 	
 	public void createNewPatient(Patient newPatient) {

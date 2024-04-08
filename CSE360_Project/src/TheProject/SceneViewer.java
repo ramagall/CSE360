@@ -1,5 +1,6 @@
 package TheProject;
 
+import TheProject.Users.*;
 import TheProject.Records.*;
 import TheProject.Views.LoginView;
 import javafx.scene.Scene;
@@ -13,7 +14,8 @@ public class SceneViewer extends Scene {
 	
 	public SceneViewer(double height, double width) {
 		super(new VBox(), height, width);
-		// We will also initialize a new patient, doctor, and nurse here
+		// We will also initialize a new patientRecords, doctorRecords, and nurseRecords here
+		patientRecords = new PatientRecords();
 	}
 	
 	public SceneViewer(VBox vbox, double height, double weight) {
@@ -29,6 +31,7 @@ public class SceneViewer extends Scene {
 	}
 	
 	public void setLoginView() {
+		//System.out.println(patientRecords.searchPatient("AdminPatient").getPatientInfo());
 		changeView(new LoginView(this, patientRecords));
 	}
 	
