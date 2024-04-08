@@ -20,7 +20,7 @@ public class SceneViewer extends Scene {
 		patientRecords = new PatientRecords();
 		nurseRecords = new NurseRecords();
 	}
-	
+	//
 	public SceneViewer(VBox vbox, double height, double weight) {
 		super(vbox, height, weight);
 	}
