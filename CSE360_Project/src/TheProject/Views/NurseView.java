@@ -25,7 +25,7 @@ public class NurseView extends BorderPane {
     private TabPane patientDetailsTabsNV;
     private ListView<String> inboxNV;
 
-    public NurseView(SceneViewer sceneViewer, PatientRecords patientRecord) {
+    public NurseView(SceneViewer sceneViewer, NurseRecords nurseRecords) {
         super();
 
         Label welcomeNV = new Label("Nurse View.");

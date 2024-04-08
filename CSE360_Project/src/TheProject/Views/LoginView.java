@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class LoginView extends VBox {
-	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords) {
+	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords) {
 		super();
 		
 		Label messageLabel = new Label();
@@ -51,19 +51,36 @@ public class LoginView extends VBox {
 	        }
 	        
 	        else if (selectNurse.isSelected()) {
-	        	sceneViewer.changeView(new NurseView(sceneViewer, patientRecords));
+	        	
+	        	String userNurse = usernameField.getText();
+	        	String passNurse = passwordField.getText();
+	        	
+	        	if (nurseRecords.nurseList.containsKey(userNurse) == false) {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
+	        	else if (nurseRecords.searchNurse(userNurse).getPass().equals(passNurse)) {
+	        		
+	        		
+		        	sceneViewer.changeView(new NurseView(sceneViewer, nurseRecords));
+	        		
+	        	}
+	        	else {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
 	        }
+	        	
+	    
 	        
 	        else if (selectPatient.isSelected()) {
 	        	
-	        	String user = usernameField.getText();
-	        	String pass = passwordField.getText();
+	        	String userPatient = usernameField.getText();
+	        	String passPatient = passwordField.getText();
 	        	
 	        	// Check login is valid
-	        	if (patientRecords.patientList.containsKey(user) == false) {
+	        	if (patientRecords.patientList.containsKey(userPatient) == false) {
 	        		messageLabel.setText("Invalid Username or Password");
 	        	}
-	        	else if (patientRecords.searchPatient(user).getPass().equals(pass)) {
+	        	else if (patientRecords.searchPatient(userPatient).getPass().equals(passPatient)) {
 	        		
 	        		/* print hash map
 	        		for (String name: patientRecords.patientList.keySet()) {
