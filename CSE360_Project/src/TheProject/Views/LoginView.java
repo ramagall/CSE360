@@ -55,8 +55,21 @@ public class LoginView extends VBox {
 	        }
 	        
 	        else if (selectPatient.isSelected()) {
-	        	sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
-	          }
+	        	
+	        	String user = usernameField.getText();
+	        	String pass = passwordField.getText();
+	        	
+	        	// Check login is valid
+	        	if (patientRecords.patientList.containsKey(user) == false) {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
+	        	else if (patientRecords.searchPatient(user).getPass() != pass) {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
+	        	else {
+	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
+	        	}
+	        }
 
 	        else {
 	          messageLabel.setText("Please select user type!");
