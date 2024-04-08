@@ -29,7 +29,7 @@ public class SceneViewer extends Scene {
 	}
 	
 	public void setLoginView() {
-		changeView(new LoginView(this));
+		changeView(new LoginView(this, patientRecords));
 	}
 	
 }
