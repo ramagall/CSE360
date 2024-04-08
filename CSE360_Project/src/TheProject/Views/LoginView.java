@@ -74,7 +74,7 @@ public class LoginView extends VBox {
 	        	else if (nurseRecords.searchNurse(userNurse).getPass().equals(passNurse)) {
 	        		
 	        		
-		        	sceneViewer.changeView(new NurseView(sceneViewer, nurseRecords));
+		        	sceneViewer.changeView(new NurseView(sceneViewer, nurseRecords, patientRecords));
 	        		
 	        	}
 	        	else {

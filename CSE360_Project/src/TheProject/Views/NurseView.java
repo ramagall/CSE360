@@ -1,6 +1,7 @@
 package TheProject.Views;
 
 import TheProject.Records.*;
+import TheProject.Users.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -25,15 +26,21 @@ public class NurseView extends BorderPane {
     private TabPane patientDetailsTabsNV;
     private ListView<String> inboxNV;
 // test
-    public NurseView(SceneViewer sceneViewer, NurseRecords nurseRecords) {
+    public NurseView(SceneViewer sceneViewer, NurseRecords nurseRecords, PatientRecords patientRecords) {
         super();
+       
 
         Label welcomeNV = new Label("Nurse View.");
         HBox titleBoxNV = new HBox(welcomeNV);
 
         // Patients list
         patientListNV = new ListView<>();
-        patientListNV.getItems().addAll("Patient 1", "Patient 2", "Patient 3");
+        
+        for(String key: patientRecords.patientList.keySet())
+        {
+        	patientListNV.getItems().add(key);
+        }
+       
         searchedPatientFieldNV = new TextField();
         searchedPatientFieldNV.setPromptText("Search Patient");
         Button searchPatientNV = new Button("Search");

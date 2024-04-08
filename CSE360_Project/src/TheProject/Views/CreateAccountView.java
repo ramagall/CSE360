@@ -44,7 +44,7 @@ public class CreateAccountView extends VBox {
         String m = month.getText();
         String d = day.getText();
         String y = year.getText();
-        String patient_dob = m + "*/" + d + "*/" + y;
+        String patient_dob = m + "/" + d + "/" + y;
 
         if (patient_name.equals("")) {
         	CAIS_ERROR.setText("Please Enter first name and last name");

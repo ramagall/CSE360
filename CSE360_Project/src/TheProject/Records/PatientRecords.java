@@ -20,6 +20,7 @@ public class PatientRecords {
 			}
 			Patient newPatient = new Patient(load.data.get(0));
 			patientList.put(newPatient.getUser(), newPatient);
+			
 		}
 	}
 	
