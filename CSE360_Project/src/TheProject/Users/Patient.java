@@ -8,6 +8,11 @@ public class Patient {
 	  private String password;
 	  private String dob;
 	  
+	  public Patient(String username, String password) {
+		  this.username = username;
+		  this.password = password;
+	  }
+	  
 	  public Patient(String firstName, String lastName, String username, String password, String dob){
 		  this.firstName = firstName;
 		  this.lastName = lastName;

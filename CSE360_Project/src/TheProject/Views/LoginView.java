@@ -1,6 +1,7 @@
 package TheProject.Views;
 
 import TheProject.Records.*;
+import TheProject.Users.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -85,7 +86,8 @@ public class LoginView extends VBox {
 	        else {
 	          if (pass1.equals(pass2)) {
 	            /* We will add here a check for */
-	        	sceneViewer.changeView(new CreateAccountView(sceneViewer, patientRecords));
+	        	Patient newPatient = new Patient(name, pass1);
+	        	sceneViewer.changeView(new CreateAccountView(sceneViewer, patientRecords, newPatient));
 	          } else {
 	            messageLabel.setText("Passwords do not match >:(");
 	          }
