@@ -1,5 +1,6 @@
 package TheProject.Views;
 
+import TheProject.Records.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -19,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PatientView extends BorderPane {
-	public PatientView(SceneViewer sceneViewer) {
+	public PatientView(SceneViewer sceneViewer, PatientRecords patientRecords) {
 		
 		super();
 		

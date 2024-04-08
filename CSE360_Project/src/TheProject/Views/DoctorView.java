@@ -1,5 +1,6 @@
 package TheProject.Views;
 
+import TheProject.Records.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -17,7 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class DoctorView extends BorderPane{
-	public DoctorView(SceneViewer sceneViewer) {
+	public DoctorView(SceneViewer sceneViewer, PatientRecords patientRecords) {
 		super();
 		
 		Label welcomeDV = new Label("Doctor View.");

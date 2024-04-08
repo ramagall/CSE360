@@ -1,4 +1,6 @@
 package TheProject;
+
+import TheProject.Records.*;
 import TheProject.Views.LoginView;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -6,6 +8,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public class SceneViewer extends Scene {
+	
+	public PatientRecords patientRecords;
 	
 	public SceneViewer(double height, double width) {
 		super(new VBox(), height, width);
