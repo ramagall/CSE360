@@ -14,7 +14,7 @@ public class EmailRecords {
 	 * Recieved: email_data
 	*/
 	
-	// fill
+	
 	
 	// keep file storing emails like a stack in order to keep in chronological order
 	// if (send email)
