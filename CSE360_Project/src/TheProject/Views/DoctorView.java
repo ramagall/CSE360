@@ -18,7 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class DoctorView extends BorderPane{
-	public DoctorView(SceneViewer sceneViewer, PatientRecords patientRecords) {
+	public DoctorView(SceneViewer sceneViewer, DoctorRecords doctorRecords) {
 		super();
 		
 		Label welcomeDV = new Label("Doctor View.");

@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class LoginView extends VBox {
-	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords) {
+	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords, DoctorRecords doctorRecords) {
 		super();
 		
 		Label messageLabel = new Label();
@@ -47,7 +47,20 @@ public class LoginView extends VBox {
 	    	// Once File I/O is implemented we will check if the username and password are valid.
 	        
 	        if (selectDoctor.isSelected()) {
-	        	sceneViewer.changeView(new DoctorView(sceneViewer, patientRecords));
+	        	
+	        	String userDoctor = usernameField.getText();
+	        	String passDoctor = passwordField.getText();
+	        	
+	        	
+	        	if (doctorRecords.doctorList.containsKey(userDoctor) == false) {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
+	        	else if (doctorRecords.searchDoctor(userDoctor).getPass().equals(passDoctor)) {
+	        	
+	        		sceneViewer.changeView(new DoctorView(sceneViewer, doctorRecords));
+	        	} else {
+	        		messageLabel.setText("Invalid Username or Password");
+	        	}
 	        }
 	        
 	        else if (selectNurse.isSelected()) {

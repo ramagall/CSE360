@@ -14,11 +14,14 @@ public class SceneViewer extends Scene {
 	
 	public NurseRecords nurseRecords; 
 	
+	public DoctorRecords doctorRecords;
+	
 	public SceneViewer(double height, double width) {
 		super(new VBox(), height, width);
 		// We will also initialize a new patientRecords, doctorRecords, and nurseRecords here
 		patientRecords = new PatientRecords();
 		nurseRecords = new NurseRecords();
+		doctorRecords = new DoctorRecords();
 	}
 	//
 	public SceneViewer(VBox vbox, double height, double weight) {
@@ -35,7 +38,7 @@ public class SceneViewer extends Scene {
 	
 	public void setLoginView() {
 		//System.out.println(patientRecords.searchPatient("AdminPatient").getPatientInfo());
-		changeView(new LoginView(this, patientRecords, nurseRecords));
+		changeView(new LoginView(this, patientRecords, nurseRecords, doctorRecords));
 	
 		
 	}
