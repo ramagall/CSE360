@@ -6,6 +6,7 @@ Project Repository
 Used Technology:  
 &emsp;- JavaFX  
 &emsp;- File I/O  
+&emsp;- Hash Maps  
 
 Contributers:  
 &emsp;- Rodolfo Magallanes Barreras  
