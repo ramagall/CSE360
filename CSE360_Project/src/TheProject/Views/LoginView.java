@@ -63,11 +63,19 @@ public class LoginView extends VBox {
 	        	if (patientRecords.patientList.containsKey(user) == false) {
 	        		messageLabel.setText("Invalid Username or Password");
 	        	}
-	        	else if (patientRecords.searchPatient(user).getPass() != pass) {
-	        		messageLabel.setText("Invalid Username or Password");
+	        	else if (patientRecords.searchPatient(user).getPass().equals(pass)) {
+	        		
+	        		/* print hash map
+	        		for (String name: patientRecords.patientList.keySet()) {
+	        		    String key = name.toString();
+	        		    String value = patientRecords.patientList.get(name).toString();
+	        		    System.out.println(key + " " + value);
+	        		}
+	        		*/
+	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
 	        	}
 	        	else {
-	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
+	        		messageLabel.setText("Invalid Username or Password");
 	        	}
 	        }
 
