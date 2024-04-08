@@ -1,5 +1,6 @@
 package TheProject.Views;
 
+import TheProject.Records.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -10,7 +11,7 @@ import javafx.scene.layout.VBox;
 
 public class CreateAccountView extends VBox {
 	
-	public CreateAccountView(SceneViewer sceneViewer){
+	public CreateAccountView(SceneViewer sceneViewer, PatientRecords patientRecords){
 	super();
 	
 	Label addAccountWelcome = new Label("Welcome! Please complete the following form.");
@@ -57,7 +58,7 @@ public class CreateAccountView extends VBox {
         	CAIS_ERROR.setText("Invalid Birth Year. Please Use (YYYY)");
         }
         else {
-          sceneViewer.changeView(new PatientView(sceneViewer));
+          sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
         }
       });
     

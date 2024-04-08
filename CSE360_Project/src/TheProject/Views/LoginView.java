@@ -1,5 +1,6 @@
 package TheProject.Views;
 
+import TheProject.Records.*;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -12,7 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class LoginView extends VBox {
-	public LoginView(SceneViewer sceneViewer) {
+	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords) {
 		super();
 		
 		Label messageLabel = new Label();
@@ -45,15 +46,15 @@ public class LoginView extends VBox {
 	    	// Once File I/O is implemented we will check if the username and password are valid.
 	        
 	        if (selectDoctor.isSelected()) {
-	        	sceneViewer.changeView(new DoctorView(sceneViewer));
+	        	sceneViewer.changeView(new DoctorView(sceneViewer, patientRecords));
 	        }
 	        
 	        else if (selectNurse.isSelected()) {
-	        	sceneViewer.changeView(new NurseView(sceneViewer));
+	        	sceneViewer.changeView(new NurseView(sceneViewer, patientRecords));
 	        }
 	        
 	        else if (selectPatient.isSelected()) {
-	        	sceneViewer.changeView(new PatientView(sceneViewer));
+	        	sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
 	          }
 
 	        else {
@@ -80,7 +81,7 @@ public class LoginView extends VBox {
 	        else {
 	          if (pass1.equals(pass2)) {
 	            /* We will add here a check for */
-	        	sceneViewer.changeView(new CreateAccountView(sceneViewer));
+	        	sceneViewer.changeView(new CreateAccountView(sceneViewer, patientRecords));
 	          } else {
 	            messageLabel.setText("Passwords do not match >:(");
 	          }
