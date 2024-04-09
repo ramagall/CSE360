@@ -27,13 +27,15 @@ public class PatientView extends BorderPane {
 		
 	    Label welcomePV = new Label("Patient View.");
 	    HBox titleBoxPV = new HBox(welcomePV);
-
+	    //System.out.println(username);
 	    //Patients list 
 	    ListView<String> visitListPV = new ListView<>();
 	    for(Patient value: patientRecords.patientList.values())
         {
-	    	for(String key : value.visits.keySet()) {
-	    		visitListPV.getItems().add(key);
+	    	if(value.getUser().equals(username)) {
+	    		for(String key : value.visits.keySet()) {
+	    			visitListPV.getItems().add(key);
+	    		}
 	    	}
         }
 	    TextField searchedPatientFieldPV = new TextField();

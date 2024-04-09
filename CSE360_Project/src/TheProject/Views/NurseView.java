@@ -41,7 +41,6 @@ public class NurseView extends BorderPane {
 
         // Patients list
         patientListNV = new ListView<>();
-
         for(String key: patientRecords.patientList.keySet())
         {
         	String name = patientRecords.searchPatient(key).getFirstName() + " " + patientRecords.searchPatient(key).getLastName();
