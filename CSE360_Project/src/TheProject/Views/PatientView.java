@@ -24,7 +24,7 @@ public class PatientView extends BorderPane {
 	public PatientView(SceneViewer sceneViewer, PatientRecords patientRecords, String username) {
 		
 		super();
-		
+		Patient theUser = new Patient("None","None");
 	    Label welcomePV = new Label("Patient View.");
 	    HBox titleBoxPV = new HBox(welcomePV);
 	    //System.out.println(username);
@@ -33,6 +33,7 @@ public class PatientView extends BorderPane {
 	    for(Patient value: patientRecords.patientList.values())
         {
 	    	if(value.getUser().equals(username)) {
+	    		theUser = value;
 	    		for(String key : value.visits.keySet()) {
 	    			visitListPV.getItems().add(key);
 	    		}
@@ -46,65 +47,6 @@ public class PatientView extends BorderPane {
 	    VBox searchPatientBoxPV = new VBox(searchedPatientFieldPV, visitListPV,  searchPatientPV, patientMyProfilePV, patientLogout);
 
 	    
-
-	    //Tabs for patients - center
-	    TabPane patientDetailsTabsPV = new TabPane();
-	    Tab summaryOfVisit = new Tab("Summary of Visit");
-	    summaryOfVisit.setClosable(false);
-	    Tab patientHistoryTabPV = new Tab("Patient History");
-	    patientHistoryTabPV.setClosable(false);
-	    Tab insuranceTabPV = new Tab("Insurance");
-	    insuranceTabPV.setClosable(false);
-	    patientDetailsTabsPV.getTabs().addAll(summaryOfVisit, patientHistoryTabPV, insuranceTabPV);
-
-	    /*
-	      Center information 
-	    */
-	    
-	    Label date = new Label("Date: January 1, 2000");
-
-	    Label reasonFV = new Label("Reason for Visit: Broken Ankle");
-	    Label Notes = new Label("Notes: ");
-
-	    summaryOfVisit.setContent(new VBox(date, reasonFV, Notes));
-	    
-	    Label insurance = new Label("Insurance: Generic");
-
-	    insuranceTabPV.setContent(new VBox(insurance));
-
-
-
-	     Label healthIssues1 = new Label("Prior Health Issues");
-
-	     HBox hx = new HBox(20);
-	     HBox vx = new HBox(20); // spacing = 20
-	     VBox comb = new VBox(20);
-
-	     Label vaccinesR = new Label("Vaccination Records");
-
-	     TextArea vaccines = new TextArea("vaccine 1" + "vaccine2" + "vaccine3");
-	     vaccines.setEditable(false);
-	     vaccines.setLayoutX(300);
-	     vaccines.setLayoutY(100);
-	     vaccines.setMaxWidth(100);
-	     vaccines.setWrapText(true);
-	     vaccines.setEditable(false);
-	     TextArea healthIssues = new TextArea("\nvaccine \n" + "\nvaccine2\n" + "\nvaccine2\n");
-	     healthIssues.setEditable(false);
-	     healthIssues.setLayoutX(380);
-	     healthIssues.setLayoutY(100);
-	     healthIssues.setMaxWidth(100);
-	     healthIssues.setWrapText(true);
-	     healthIssues.setEditable(false);
-
-	     hx.getChildren().addAll(healthIssues1, vaccinesR);
-	     vx.getChildren().addAll(hx, healthIssues, vaccines);
-
-	     comb.getChildren().addAll(hx,vx);
-
-	      patientHistoryTabPV.setContent(comb);
-
-
 	    
 	    //Patients - Inbox and Send Message
 	    TabPane emailTabPanePV = new TabPane();
@@ -168,7 +110,6 @@ public class PatientView extends BorderPane {
 
 	    super.setTop(titleBoxPV);
 	    super.setLeft(searchPatientBoxPV);
-	    super.setCenter(patientDetailsTabsPV);
 	    super.setRight(emailTabPanePV);
 
 
@@ -181,5 +122,73 @@ public class PatientView extends BorderPane {
 	    patientMyProfilePV.setOnAction(e -> {
 	    	sceneViewer.changeView(new PatientProfileView(sceneViewer, patientRecords, username));
 	    });
+	    
+	    visitListPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	viewVisitDetails(username, newValue, patientRecords);
+            }
+        });
+	}
+	
+	public void viewVisitDetails(String user, String theDate, PatientRecords patientRecords){
+		Patient currentUser = patientRecords.searchPatient(user);
+		String[] currentVisit = currentUser.getVisit(theDate);
+	    //Tabs for patients - center
+	    TabPane patientDetailsTabsPV = new TabPane();
+	    Tab summaryOfVisit = new Tab("Summary of Visit");
+	    summaryOfVisit.setClosable(false);
+	    Tab patientHistoryTabPV = new Tab("Patient History");
+	    patientHistoryTabPV.setClosable(false);
+	    Tab insuranceTabPV = new Tab("Insurance");
+	    insuranceTabPV.setClosable(false);
+	    patientDetailsTabsPV.getTabs().addAll(summaryOfVisit, patientHistoryTabPV, insuranceTabPV);
+
+	    /*
+	      Center information 
+	    */
+	    
+	    Label date = new Label(theDate);
+
+	    Label reasonFV = new Label("Reason for Visit: " + currentVisit[10]);
+	    Label Notes = new Label("Notes: ");
+
+	    summaryOfVisit.setContent(new VBox(date, reasonFV, Notes));
+	    
+	    Label insurance = new Label("Insurance: Generic");
+
+	    insuranceTabPV.setContent(new VBox(insurance));
+
+
+
+	     Label healthIssues1 = new Label("Prior Health Issues");
+
+	     HBox hx = new HBox(20);
+	     HBox vx = new HBox(20); // spacing = 20
+	     VBox comb = new VBox(20);
+
+	     Label vaccinesR = new Label("Vaccination Records");
+
+	     TextArea vaccines = new TextArea(currentVisit[8]);
+	     vaccines.setEditable(false);
+	     vaccines.setLayoutX(300);
+	     vaccines.setLayoutY(100);
+	     vaccines.setMaxWidth(100);
+	     vaccines.setWrapText(true);
+	     vaccines.setEditable(false);
+	     TextArea healthIssues = new TextArea(currentVisit[7]);
+	     healthIssues.setEditable(false);
+	     healthIssues.setLayoutX(380);
+	     healthIssues.setLayoutY(100);
+	     healthIssues.setMaxWidth(100);
+	     healthIssues.setWrapText(true);
+	     healthIssues.setEditable(false);
+
+	     hx.getChildren().addAll(healthIssues1, vaccinesR);
+	     vx.getChildren().addAll(hx, healthIssues, vaccines);
+
+	     comb.getChildren().addAll(hx,vx);
+
+	     patientHistoryTabPV.setContent(comb);
+	     super.setCenter(patientDetailsTabsPV);
 	}
 }
