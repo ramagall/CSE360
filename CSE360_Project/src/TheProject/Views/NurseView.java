@@ -39,6 +39,7 @@ public class NurseView extends BorderPane {
         for(String key: patientRecords.patientList.keySet())
         {
         	String name = patientRecords.searchPatient(key).getFirstName() + " " + patientRecords.searchPatient(key).getLastName();
+        	
         	patientListNV.getItems().add(name);
         }
        
@@ -91,7 +92,7 @@ public class NurseView extends BorderPane {
     private void updatePatientDetails(String selectedPatient) {
         // Clear previous content
         patientDetailsTabsNV.getTabs().clear();
-
+        	
         // Vitals Tab
         Tab vitalsTabNV = new Tab("Vitals");
 
@@ -110,7 +111,8 @@ public class NurseView extends BorderPane {
         heightField.setPromptText("Height");
         TextField bloodPressureField = new TextField();
         bloodPressureField.setPromptText("Blood Pressure");
-
+        
+       
         // Button for input info
         Button inputInfoButton = new Button("Input Info");
 

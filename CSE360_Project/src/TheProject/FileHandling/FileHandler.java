@@ -1,6 +1,8 @@
 package TheProject.FileHandling;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class FileHandler {
@@ -70,4 +72,34 @@ public class FileHandler {
 		}
 	}
 	
+	public void FileReplace(String file)
+	
+	{
+		 List<String> lines = new ArrayList<String>();
+		    String line = null;
+		    String lineReplaced = "";
+		   
+		        try {
+		            File f1 = new File(file);
+		            FileReader fr = new FileReader(f1);
+		            BufferedReader br = new BufferedReader(fr);
+		            while ((line = br.readLine()) != null) {
+		                if (line.contains(lineReplaced))
+		                    line = line.replace(lineReplaced, " ");
+		                lines.add(line);
+		            }
+		            fr.close();
+		            br.close();
+
+		            FileWriter fw = new FileWriter(f1);
+		            BufferedWriter out = new BufferedWriter(fw);
+		            for(String s : lines)
+		                 out.write(s);
+		            out.flush();
+		            out.close();
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		        }
+		    
+	}
 }
