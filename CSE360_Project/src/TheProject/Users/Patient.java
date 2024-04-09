@@ -10,7 +10,7 @@ public class Patient {
 	  private String username;
 	  private String password;
 	  private String dob;
-	  private Map <String, String[]> visits;
+	  public Map <String, String[]> visits;
 	  
 	  public Patient(String username, String password) {
 		  this.username = username;
@@ -37,7 +37,7 @@ public class Patient {
 	  }
 	  
 	  public void setVisit(String [] data) { 
-		  String[] visit = new String[10];
+		  String[] visit = new String[11];
 		  visit[0] = data[0]; // username
 		  visit[1] = data[1]; // date
 		  visit[2] = data[2]; // weight
@@ -48,7 +48,8 @@ public class Patient {
 		  visit[7] = data[7]; // History
 		  visit[8] = data[8]; // vax records
 		  visit[9] = data[9]; //  prescriptions.
-		  visits.put(visit[0], visit);
+		  visit[10] = data[10]; // reason for visit
+		  visits.put(visit[1], visit);
 	  }
 	  
 	  public String[] getVisit(String date) {

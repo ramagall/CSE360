@@ -1,6 +1,7 @@
 package TheProject.Views;
 
 import TheProject.Records.*;
+import TheProject.Users.Patient;
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -29,7 +30,12 @@ public class PatientView extends BorderPane {
 
 	    //Patients list 
 	    ListView<String> visitListPV = new ListView<>();
-	    visitListPV.getItems().addAll("February 15th 2024", "March 10th 2024", "July 21 2023");
+	    for(Patient value: patientRecords.patientList.values())
+        {
+	    	for(String key : value.visits.keySet()) {
+	    		visitListPV.getItems().add(key);
+	    	}
+        }
 	    TextField searchedPatientFieldPV = new TextField();
 	    searchedPatientFieldPV.setPromptText("Search Visits");
 	    Button searchPatientPV = new Button("Search");

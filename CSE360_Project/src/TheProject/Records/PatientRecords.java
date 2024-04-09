@@ -20,18 +20,20 @@ public class PatientRecords {
 				continue;
 			}
 			Patient newPatient = new Patient(load.data.get(0));
-			System.out.println(newPatient.getPass());
 			patientList.put(newPatient.getUser(), newPatient);
 			
 		}
-		/*
 		File dir2 = new File(VISITPATH);
 		for(File file : dir2.listFiles()) {
 			AttemptedLoad load2 = FileHandler.loadFile(file.getPath());
 			if(load2.loaded == false) {
 				continue;
 			}
-		}*/
+			Patient currentPatient = patientList.get(load2.data.get(0)[0]);
+			for(int i = 0; i < load2.data.size(); i++) {
+					currentPatient.setVisit(load2.data.get(i));
+			}
+		}
 	}
 	
 	public Patient searchPatient(String userName) {

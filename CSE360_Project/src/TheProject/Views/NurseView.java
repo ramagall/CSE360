@@ -108,7 +108,7 @@ public class NurseView extends BorderPane {
     private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
         // Clear previous content
     	Patient thePatient = patientRecords.searchByName(selectedPatient);
-    	String[] visit = new String[10];
+    	String[] visit = new String[11];
     	visit[0] = thePatient.getUser();
     	for(int i = 1; i < visit.length; i++) {
     		visit[i] = "N/A";
@@ -131,6 +131,8 @@ public class NurseView extends BorderPane {
         // Text Fields for Vitals
         TextField dateField = new TextField();
         dateField.setPromptText("Date");
+        TextField reasonField = new TextField();
+        reasonField.setPromptText("Reason for visit");
         TextField weightField = new TextField();
         weightField.setPromptText("Weight");
         TextField temperatureField = new TextField();
@@ -170,6 +172,7 @@ public class NurseView extends BorderPane {
         	{	
         		//note
         		String date = dateField.getText();
+        		String reason = reasonField.getText();
         		String weight = weightField.getText();
         		String temperature = temperatureField.getText();
         		String height = heightField.getText();
@@ -180,6 +183,7 @@ public class NurseView extends BorderPane {
     			visit[3] = temperature; // temp
     			visit[4] = height; // height
     			visit[5] =	bloodPressure; // B.P.
+    			visit[10] = reason;
 		  
         	}
    	
