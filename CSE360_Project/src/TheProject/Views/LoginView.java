@@ -90,7 +90,9 @@ public class LoginView extends VBox {
 	        	String passPatient = passwordField.getText();
 	        	
 	        	// Check login is valid
-	        	if (patientRecords.patientList.containsKey(userPatient) == false) {
+	        	if ((patientRecords.patientList.containsKey(userPatient) == false) || 
+	        	(nurseRecords.nurseList.containsKey(userPatient) == false) || 
+	        	(doctorRecords.doctorList.containsKey(userPatient) == false)) {
 	        		messageLabel.setText("Invalid Username or Password");
 	        	}
 	        	else if (patientRecords.searchPatient(userPatient).getPass().equals(passPatient)) {
