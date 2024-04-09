@@ -61,7 +61,7 @@ public class PatientRecords {
 		patientList.put(newPatient.getUser(), newPatient);
 		File file = FileHandler.getFile(newPatient.getUser() + "_visit", VISITPATH);
 		String visitString = String.join("~", visit);
-		FileHandler.writeToFile(file, visitString);
+		FileHandler.FileReplace(file.getPath(), visitString);
 	}
 	
 	public void updateVisit() {
