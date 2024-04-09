@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PatientView extends BorderPane {
-	public PatientView(SceneViewer sceneViewer, PatientRecords patientRecords) {
+	public PatientView(SceneViewer sceneViewer, PatientRecords patientRecords, String username) {
 		
 		super();
 		
@@ -167,6 +167,11 @@ public class PatientView extends BorderPane {
 	    // Patient Logout Check 
 	    patientLogout.setOnAction(e -> {
 	    	sceneViewer.setLoginView();
+	    });
+	    
+	    // MyProfile Button
+	    patientMyProfilePV.setOnAction(e -> {
+	    	sceneViewer.changeView(new PatientProfileView(sceneViewer, patientRecords, username));
 	    });
 	}
 }

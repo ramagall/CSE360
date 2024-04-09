@@ -72,34 +72,35 @@ public class FileHandler {
 		}
 	}
 	
-	public void FileReplace(String file)
+	public static void FileReplace(String file, String lineReplaced, String newInfo)
 	
 	{
 		 List<String> lines = new ArrayList<String>();
-		    String line = null;
-		    String lineReplaced = "";
+		 String line = null;
 		   
-		        try {
-		            File f1 = new File(file);
-		            FileReader fr = new FileReader(f1);
-		            BufferedReader br = new BufferedReader(fr);
-		            while ((line = br.readLine()) != null) {
-		                if (line.contains(lineReplaced))
-		                    line = line.replace(lineReplaced, " ");
-		                lines.add(line);
+		 try {
+			 File f1 = new File(file);
+		     FileReader fr = new FileReader(f1);
+		     BufferedReader br = new BufferedReader(fr);
+		     	while ((line = br.readLine()) != null) {
+		     		if (line.contains(lineReplaced)) {
+		     			line = line.replace(lineReplaced, newInfo);
 		            }
-		            fr.close();
-		            br.close();
-
-		            FileWriter fw = new FileWriter(f1);
-		            BufferedWriter out = new BufferedWriter(fw);
-		            for(String s : lines)
-		                 out.write(s);
-		            out.flush();
-		            out.close();
-		        } catch (Exception ex) {
-		            ex.printStackTrace();
+		            lines.add(line);
 		        }
-		    
+		        fr.close();
+		        br.close();
+
+		        FileWriter fw = new FileWriter(f1);
+		        BufferedWriter out = new BufferedWriter(fw);
+		        for(String s : lines) {
+		                 out.write(s);
+		        }
+		        out.flush();
+		        out.close();
+		 }
+		 catch (Exception ex) {
+		        ex.printStackTrace();
+		 }
 	}
 }
