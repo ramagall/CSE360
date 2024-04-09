@@ -2,7 +2,7 @@ package TheProject;
 
 import TheProject.Users.*;
 import TheProject.Records.*;
-import TheProject.Views.LoginView;
+import TheProject.Views.*;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;

@@ -68,7 +68,7 @@ public class CreateAccountView extends VBox {
         	
         	patientRecords.createNewPatient(newPatient);
         	
-          sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
+          sceneViewer.changeView(new PatientView(sceneViewer, patientRecords, newPatient.getUser()));
         }
       });
     

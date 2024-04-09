@@ -102,7 +102,7 @@ public class LoginView extends VBox {
 	        		    System.out.println(key + " " + value);
 	        		}
 	        		*/
-	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords));
+	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords, usernameField.getText()));
 	        	}
 	        	else {
 	        		messageLabel.setText("Invalid Username or Password");

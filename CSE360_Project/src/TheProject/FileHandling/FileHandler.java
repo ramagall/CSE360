@@ -72,7 +72,7 @@ public class FileHandler {
 		}
 	}
 	
-	public void FileReplace(String file, String lineReplaced, String newInfo)
+	public static void FileReplace(String file, String lineReplaced, String newInfo)
 	
 	{
 		 List<String> lines = new ArrayList<String>();
