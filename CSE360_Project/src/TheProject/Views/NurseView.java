@@ -38,7 +38,8 @@ public class NurseView extends BorderPane {
         
         for(String key: patientRecords.patientList.keySet())
         {
-        	patientListNV.getItems().add(key);
+        	String name = patientRecords.searchPatient(key).getFirstName() + " " + patientRecords.searchPatient(key).getLastName();
+        	patientListNV.getItems().add(name);
         }
        
         searchedPatientFieldNV = new TextField();
