@@ -163,7 +163,7 @@ public class NurseView extends BorderPane {
         		vitalsTabNV.setContent(vitalsContent);
         		visit[1] = dateField.getText(); // date
     			visit[2] = "Too Young"; // temp
-    			visit[3] = "Too Young"; // height
+    			visit[3] = "Too Young"; // height 
     			visit[4] =	"Too Young"; // B.P.
         	}
         	
