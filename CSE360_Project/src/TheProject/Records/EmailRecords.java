@@ -4,8 +4,7 @@ public class EmailRecords {
 
 	// implemented the exact same as everything else but for emails
 	
-	// T_username_emails.txt
-	// T = type being P or N or D
+	// username_inbox.txt
 	// contains inbox for that user
 	// goes into /UserRecords/Emails
 	
