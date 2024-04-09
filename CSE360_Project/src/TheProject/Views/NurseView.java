@@ -151,7 +151,8 @@ public class NurseView extends BorderPane {
         	}
         	
         	else
-        	{		 
+        	{	
+        		//note
         		String[] visit = new String[10];
         	
         		String weight = weightField.getText();
