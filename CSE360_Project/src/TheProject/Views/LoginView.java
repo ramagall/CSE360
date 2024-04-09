@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 public class LoginView extends VBox {
 	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords, DoctorRecords doctorRecords) {
 		super();
-		
 		Label messageLabel = new Label();
 		
 		Label loginTitle = new Label("Login Existing User");
@@ -90,9 +89,9 @@ public class LoginView extends VBox {
 	        	String passPatient = passwordField.getText();
 	        	
 	        	// Check login is valid
-	        	if ((patientRecords.patientList.containsKey(userPatient) == false) || 
+	        	if ((patientRecords.patientList.containsKey(userPatient) == false) /*|| 
 	        	(nurseRecords.nurseList.containsKey(userPatient) == false) || 
-	        	(doctorRecords.doctorList.containsKey(userPatient) == false)) {
+	        	(doctorRecords.doctorList.containsKey(userPatient) == false)*/) {
 	        		messageLabel.setText("Invalid Username or Password");
 	        	}
 	        	else if (patientRecords.searchPatient(userPatient).getPass().equals(passPatient)) {

@@ -99,14 +99,24 @@ public class NurseView extends BorderPane {
         // Event handler for selecting a patient
         patientListNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                updatePatientDetails(newValue, patientRecords);
+            	Patient thePatient = patientRecords.searchPatient("victor");
+            	updatePatientDetails(newValue, patientRecords, thePatient);
             }
         });
     }
 
     // Method to update patient details based on the selected patient
-    private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
+    private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords, Patient thePatient) {
         // Clear previous content
+    	String[] visit = new String[10];
+    	visit[0] = thePatient.getUser();
+    	for(int i = 1; i < visit.length; i++) {
+    		visit[i] = "N/A";
+    	}
+    	
+    	for(int i = 0; i < visit.length; i++) {
+    		System.out.println(visit[i]);
+    	}
         patientDetailsTabsNV.getTabs().clear();
         	
         // Vitals Tab
@@ -119,6 +129,8 @@ public class NurseView extends BorderPane {
         nameLabel.setAlignment(javafx.geometry.Pos.CENTER);
 
         // Text Fields for Vitals
+        TextField dateField = new TextField();
+        dateField.setPromptText("Date");
         TextField weightField = new TextField();
         weightField.setPromptText("Weight");
         TextField temperatureField = new TextField();
@@ -133,7 +145,7 @@ public class NurseView extends BorderPane {
         Button inputInfoButton = new Button("Input Info");
 
         // VBox to hold all components
-        VBox vitalsContent = new VBox(50, nameLabel, weightField, temperatureField, heightField, bloodPressureField, inputInfoButton);
+        VBox vitalsContent = new VBox(50, nameLabel, dateField, weightField, temperatureField, heightField, bloodPressureField, inputInfoButton);
         vitalsContent.setPadding(new Insets(10));
         vitalsContent.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         vitalsTabNV.setContent(vitalsContent);
@@ -148,23 +160,27 @@ public class NurseView extends BorderPane {
         		Label ageLimit = new Label("not Old enugh");
         		vitalsContent.getChildren().add(ageLimit);
         		vitalsTabNV.setContent(vitalsContent);
+        		visit[1] = dateField.getText(); // date
+    			visit[2] = "Too Young"; // temp
+    			visit[3] = "Too Young"; // height
+    			visit[4] =	"Too Young"; // B.P.
         	}
         	
         	else
         	{	
         		//note
-        		String[] visit = new String[10];
-        	
+        		String date = dateField.getText();
         		String weight = weightField.getText();
         		String temperature = temperatureField.getText();
         		String height = heightField.getText();
         		String bloodPressure = bloodPressureField.getText();
-        		visit[0] = null; // date
-    			visit[1] = weight; // temp
-    			visit[2] = height; // height
-    			visit[3] =	bloodPressure; // B.P.
+        		
+        		visit[1] = date; // date
+        		visit [2] = weight;
+    			visit[3] = temperature; // temp
+    			visit[4] = height; // height
+    			visit[5] =	bloodPressure; // B.P.
 		  
-        		patientRecords.searchPatient(user).getVisit(visit);
         	}
    	
         });
@@ -187,13 +203,23 @@ public class NurseView extends BorderPane {
 
         // Button for inputting allergy
         Button inputAllergyButton = new Button("Input Allergy");
+        Button saveVisit = new Button("Save visit");
 
         // VBox to hold Allergies components
-        VBox allergiesContent = new VBox(10, allergyField, inputAllergyButton);
+        VBox allergiesContent = new VBox(10, allergyField, inputAllergyButton, saveVisit);
         allergiesTabNV.setContent(allergiesContent);
         allergiesTabNV.setClosable(false);
 
         patientDetailsTabsNV.getTabs().add(allergiesTabNV);
+        
+        inputAllergyButton.setOnAction(e -> {
+        	visit[6] = allergyField.getText();
+        });
+        
+        saveVisit.setOnAction(e-> {
+        	thePatient.setVisit(visit);
+        	patientRecords.createVisit(thePatient, visit);
+        });
 
         // Placeholder for patient history information
         Tab patientHistoryTabNV = new Tab("Patient History");
@@ -202,5 +228,6 @@ public class NurseView extends BorderPane {
         patientHistoryTabNV.setContent(patientHistoryListView);
         patientHistoryTabNV.setClosable(false);
         patientDetailsTabsNV.getTabs().add(patientHistoryTabNV);
+        
     }
 }

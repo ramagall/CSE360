@@ -36,18 +36,24 @@ public class Patient {
 		 visits = new HashMap<String, String[]>();
 	  }
 	  
-	  public void getVisit(String [] data) { 
+	  public void setVisit(String [] data) { 
 		  String[] visit = new String[10];
-		  visit[0] = data[0]; // date
-		  visit[1] = data[1]; // temp
-		  visit[2] = data[2]; // height
-		  visit[3] = data[3]; // B.P.
-		  visit[4] = data[4]; // allergies
-		  visit[5] = data[5]; // history
-		  visit[6] = data[6]; // vax records.
-		  visit[7] = data[7]; // prescriptions
-		  visit[8] = data[8]; // weight
+		  visit[0] = data[0]; // username
+		  visit[1] = data[1]; // date
+		  visit[2] = data[2]; // weight
+		  visit[3] = data[3]; // temp
+		  visit[4] = data[4]; // height
+		  visit[5] = data[5]; // B.P.
+		  visit[6] = data[6]; // Allergies
+		  visit[7] = data[7]; // History
+		  visit[8] = data[8]; // vax records
+		  visit[9] = data[9]; //  prescriptions.
 		  visits.put(visit[0], visit);
+	  }
+	  
+	  public String[] getVisit(String date) {
+		  
+		  return visits.get(date);
 	  }
 	  
 	  /* Methods */
