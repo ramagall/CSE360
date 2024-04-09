@@ -25,6 +25,12 @@ public class NurseView extends BorderPane {
     private TextField searchedPatientFieldNV;
     private TabPane patientDetailsTabsNV;
     private ListView<String> inboxNV;
+    
+    
+    int day;
+    int month;
+    int year;
+    String user;
 // test
     public NurseView(SceneViewer sceneViewer, NurseRecords nurseRecords, PatientRecords patientRecords) {
         super();
@@ -35,14 +41,24 @@ public class NurseView extends BorderPane {
 
         // Patients list
         patientListNV = new ListView<>();
-        
+
         for(String key: patientRecords.patientList.keySet())
         {
         	String name = patientRecords.searchPatient(key).getFirstName() + " " + patientRecords.searchPatient(key).getLastName();
+        	String age = patientRecords.searchPatient(key).getDOB();
+        	 user = patientRecords.searchPatient(key).getUser();
         	
+        	String[] values = age.split("/");
+        	  day = Integer.parseInt(values[0]);
+              month = Integer.parseInt(values[1]);
+              year = Integer.parseInt(values[2]);
+        	
+        	{
         	patientListNV.getItems().add(name);
+        	}
         }
-       
+
+        
         searchedPatientFieldNV = new TextField();
         searchedPatientFieldNV.setPromptText("Search Patient");
         Button searchPatientNV = new Button("Search");
@@ -83,13 +99,13 @@ public class NurseView extends BorderPane {
         // Event handler for selecting a patient
         patientListNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                updatePatientDetails(newValue);
+                updatePatientDetails(newValue, patientRecords);
             }
         });
     }
 
     // Method to update patient details based on the selected patient
-    private void updatePatientDetails(String selectedPatient) {
+    private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
         // Clear previous content
         patientDetailsTabsNV.getTabs().clear();
         	
@@ -124,6 +140,33 @@ public class NurseView extends BorderPane {
         vitalsTabNV.setClosable(false);
         
         
+        inputInfoButton.setOnAction(e -> 
+        {
+        	
+        	if( year > 2012)
+        	{
+        		Label ageLimit = new Label("not Old enugh");
+        		vitalsContent.getChildren().add(ageLimit);
+        		vitalsTabNV.setContent(vitalsContent);
+        	}
+        	
+        	else
+        	{		 
+        		String[] visit = new String[10];
+        	
+        		String weight = weightField.getText();
+        		String temperature = temperatureField.getText();
+        		String height = heightField.getText();
+        		String bloodPressure = bloodPressureField.getText();
+        		visit[0] = null; // date
+    			visit[1] = weight; // temp
+    			visit[2] = height; // height
+    			visit[3] =	bloodPressure; // B.P.
+		  
+        		patientRecords.searchPatient(user).getVisit(visit);
+        	}
+   	
+        });
         /*
         
         this is where Input Info will save into the patient file 
