@@ -99,15 +99,15 @@ public class NurseView extends BorderPane {
         // Event handler for selecting a patient
         patientListNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	Patient thePatient = patientRecords.searchPatient("victor");
-            	updatePatientDetails(newValue, patientRecords, thePatient);
+            	updatePatientDetails(newValue, patientRecords);
             }
         });
     }
 
     // Method to update patient details based on the selected patient
-    private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords, Patient thePatient) {
+    private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
         // Clear previous content
+    	Patient thePatient = patientRecords.searchByName(selectedPatient);
     	String[] visit = new String[10];
     	visit[0] = thePatient.getUser();
     	for(int i = 1; i < visit.length; i++) {

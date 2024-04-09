@@ -38,6 +38,19 @@ public class PatientRecords {
 		return patientList.get(userName);
 	}
 	
+	public Patient searchByName(String givenName) {
+		for(String key: patientList.keySet())
+        {
+        	String name = searchPatient(key).getFirstName() + " " + searchPatient(key).getLastName();
+        	if(name.equals(givenName)) {
+        		Patient possiblePatient = searchPatient(key);
+        		return possiblePatient;
+        	}
+        }
+		Patient failed = new Patient("None", "None");
+		return failed;
+	}
+	
 	public void createNewPatient(Patient newPatient) {
 		patientList.put(newPatient.getUser(), newPatient);
 		File file = FileHandler.getFile(newPatient.getUser() + "_info", INFOPATH);
@@ -47,7 +60,8 @@ public class PatientRecords {
 	public void createVisit(Patient newPatient, String[] visit) {
 		patientList.put(newPatient.getUser(), newPatient);
 		File file = FileHandler.getFile(newPatient.getUser() + "_visit", VISITPATH);
-		FileHandler.writeToFile(file, newPatient.getVisit(visit[0]));
+		String visitString = String.join("~", visit);
+		FileHandler.writeToFile(file, visitString);
 	}
 	
 	public void updateVisit() {
