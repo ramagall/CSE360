@@ -219,6 +219,7 @@ public class NurseView extends BorderPane {
         saveVisit.setOnAction(e-> {
         	thePatient.setVisit(visit);
         	patientRecords.createVisit(thePatient, visit);
+        	saveVisit.setDisable(true);
         });
 
         // Placeholder for patient history information
