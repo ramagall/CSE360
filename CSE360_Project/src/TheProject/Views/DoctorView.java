@@ -11,6 +11,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
@@ -34,9 +35,27 @@ public class DoctorView extends BorderPane{
 	    VBox searchPatientBoxDV = new VBox(searchedPatientFieldDV, patientListDV,  searchPatientDV, docLogout);
 
 	    //Tabs for patients - center
+	    
+	    // Center - Exam Results
 	    TabPane patientDetailsTabsDV = new TabPane();
 	    Tab examinationTabDV = new Tab("Exam results");
 	    examinationTabDV.setClosable(false);
+	    
+	    TextArea examResultsField = new TextArea();
+	    examResultsField.setPrefRowCount(5);
+	    Button resultsConfirm = new Button("Confirm Results");
+	    examResultsField.setPromptText("Exam Results...");
+	    TextArea prescriptionsField = new TextArea();
+	    prescriptionsField.setPrefRowCount(4);
+	    Button prescriptionsConfirm = new Button("Confirm Prescriptions");
+	    prescriptionsField.setPromptText("Prescriptions...");
+	    
+	    VBox examResults = new VBox(10);
+	    examResults.setPadding(new Insets(20));
+	    examResults.getChildren().addAll(examResultsField, resultsConfirm, prescriptionsField, prescriptionsConfirm);
+	    examinationTabDV.setContent(examResults);
+	    
+	    // Center - Patient History
 	    Tab patientHistoryTabDV = new Tab("Patient History");
 	    patientHistoryTabDV.setClosable(false);
 	    patientDetailsTabsDV.getTabs().addAll(examinationTabDV, patientHistoryTabDV);
@@ -107,6 +126,20 @@ public class DoctorView extends BorderPane{
 	    
 	    docLogout.setOnAction(e -> {
 	    	sceneViewer.setLoginView();
+	    });
+	    
+	    resultsConfirm.setOnAction(e -> {
+	    	examResultsField.setDisable(true);
+	    	resultsConfirm.setDisable(true);
+	    	
+	    	// add results to patient visit file
+	    });
+	    
+	    prescriptionsConfirm.setOnAction(e -> {
+	    	prescriptionsField.setDisable(true);
+	    	prescriptionsConfirm.setDisable(true);
+	    	
+	    	// add prescriptions to patient visit file
 	    });
 
 	}
