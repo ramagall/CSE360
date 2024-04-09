@@ -19,6 +19,9 @@ public class PatientRecords {
 				continue;
 			}
 			Patient newPatient = new Patient(load.data.get(0));
+			for(int i = 1; i < load.data.size(); i++) {
+				newPatient.getVisit(load.data.get(i));
+			}
 			patientList.put(newPatient.getUser(), newPatient);
 			
 		}
