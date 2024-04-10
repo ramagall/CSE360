@@ -9,7 +9,7 @@ import javafx.scene.layout.*;
 import javafx.geometry.Insets;
 
 public class PatientProfileView extends BorderPane {
-	public PatientProfileView(SceneViewer sceneViewer, PatientRecords patientRecords, String username) {
+	public PatientProfileView(SceneViewer sceneViewer, EmailRecords emailRecords, PatientRecords patientRecords, String username) {
 		
 		super();
 		
@@ -69,7 +69,7 @@ public class PatientProfileView extends BorderPane {
 	    	} else {
 	    		
 	    		// update patient profile in file
-	    		String fileName = "UserRecords/Patients/" + username + "_info.txt";
+	    		String fileName = "UserRecords/Patients/PatientInfo/" + username + "_info.txt";
 	    		
 	    		FileHandler.FileReplace(fileName, oldFirstName, firstName);
 	    		patientRecords.searchPatient(username).setFirstName(firstName);
@@ -83,7 +83,7 @@ public class PatientProfileView extends BorderPane {
 	    		FileHandler.FileReplace(fileName, oldPassword, password);
 	    		patientRecords.searchPatient(username).setPass(password);
 	    		
-	    		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords, username));
+	    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
 	    	}
 	    });
 	}

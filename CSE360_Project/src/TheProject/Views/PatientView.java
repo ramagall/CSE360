@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class PatientView extends BorderPane {
-	public PatientView(SceneViewer sceneViewer, PatientRecords patientRecords, String username) {
+	public PatientView(SceneViewer sceneViewer, EmailRecords emailRecords, PatientRecords patientRecords, String username) {
 		
 		super();
 		Patient theUser = new Patient("None","None");
@@ -128,7 +128,7 @@ public class PatientView extends BorderPane {
 	    
 	    // MyProfile Button
 	    patientMyProfilePV.setOnAction(e -> {
-	    	sceneViewer.changeView(new PatientProfileView(sceneViewer, patientRecords, username));
+	    	sceneViewer.changeView(new PatientProfileView(sceneViewer, emailRecords, patientRecords, username));
 	    });
 	    
 	    visitListPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {

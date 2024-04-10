@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 
 public class CreateAccountView extends VBox {
 	
-	public CreateAccountView(SceneViewer sceneViewer, PatientRecords patientRecords, Patient newPatient){
+	public CreateAccountView(SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords, Patient newPatient){
 	super();
 	
 	Label addAccountWelcome = new Label("Welcome! Please complete the following form.");
@@ -71,7 +71,7 @@ public class CreateAccountView extends VBox {
         	
         	patientRecords.createNewPatient(newPatient);
         	
-          sceneViewer.changeView(new PatientView(sceneViewer, patientRecords, newPatient.getUser()));
+          sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, newPatient.getUser()));
         }
       });
     

@@ -9,6 +9,8 @@ import java.util.Map;
 public class PatientRecords {
 	String INFOPATH = "UserRecords/Patients/PatientInfo";
 	String VISITPATH = "UserRecords/Patients/PatientVisits";
+	String INBOXPATH = "Emails/Inbox";
+	String OUTBOXPATH = "Emails/Outbox";
 	public Map <String, Patient> patientList;
 	
 	public PatientRecords() {
@@ -57,6 +59,11 @@ public class PatientRecords {
 		patientList.put(newPatient.getUser(), newPatient);
 		File file = FileHandler.getFile(newPatient.getUser() + "_info", INFOPATH);
 		FileHandler.writeToFile(file, newPatient.getPatientInfo());
+		
+		File inFile = FileHandler.getFile(newPatient.getUser() + "_inbox", INBOXPATH);
+		FileHandler.writeToFile(inFile, newPatient.getUser());
+		File outFile = FileHandler.getFile(newPatient.getUser() + "_outbox", OUTBOXPATH);
+		FileHandler.writeToFile(outFile, newPatient.getUser());
 	}
 	
 	public void createVisit(Patient newPatient, String[] visit) {

@@ -14,7 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class LoginView extends VBox {
-	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords, DoctorRecords doctorRecords) {
+	public LoginView(SceneViewer sceneViewer, PatientRecords patientRecords, NurseRecords nurseRecords, DoctorRecords doctorRecords, EmailRecords emailRecords) {
 		super();
 		Label messageLabel = new Label();
 		
@@ -103,7 +103,7 @@ public class LoginView extends VBox {
 	        		    System.out.println(key + " " + value);
 	        		}
 	        		*/
-	        		sceneViewer.changeView(new PatientView(sceneViewer, patientRecords, userPatient));
+	        		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, userPatient));
 	        	}
 	        	else {
 	        		messageLabel.setText("Invalid Username or Password");
@@ -139,7 +139,7 @@ public class LoginView extends VBox {
 	          if (pass1.equals(pass2)) {
 	            /* We will add here a check for */
 	        	Patient newPatient = new Patient(name, pass1);
-	        	sceneViewer.changeView(new CreateAccountView(sceneViewer, patientRecords, newPatient));
+	        	sceneViewer.changeView(new CreateAccountView(sceneViewer, patientRecords, emailRecords, newPatient));
 	          } else {
 	            messageLabel.setText("Passwords do not match >:(");
 	          }

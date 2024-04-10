@@ -41,7 +41,7 @@ public class SceneViewer extends Scene {
 	
 	public void setLoginView() {
 		//System.out.println(patientRecords.searchPatient("AdminPatient").getPatientInfo());
-		changeView(new LoginView(this, patientRecords, nurseRecords, doctorRecords));
+		changeView(new LoginView(this, patientRecords, nurseRecords, doctorRecords, emailRecords));
 	
 		
 	}
