@@ -308,7 +308,7 @@ public class PatientView extends BorderPane {
     		
     		usernameSendToPVField.setText(passEmail.sender);
     		usernameSendToPVField.setEditable(false);
-    		String head = "Re " + passEmail.head;
+    		String head = "Re :" + passEmail.head;
     		headerPV.setText(head);
     		headerPV.setEditable(false);
     		
