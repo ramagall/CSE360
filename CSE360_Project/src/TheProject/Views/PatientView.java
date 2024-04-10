@@ -3,9 +3,11 @@ package TheProject.Views;
 import TheProject.Records.*;
 import TheProject.Users.Patient;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import TheProject.SceneViewer;
+import TheProject.FileHandling.FileHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -175,9 +177,22 @@ public class PatientView extends BorderPane {
 	    // Send Email Button
 	    submitPV.setOnAction(e -> {
 	    	
-	    	// send actual email FILE I/O
+	    	// Gather info from textfields
+	    	String recipient = usernameSendToPVField.getText();
+	    	String header = headerPV.getText();
+	    	String body = typeMessagePV.getText().replace('\n', '_');
+	    	String isUrgent = urgentPV.isSelected() ? "True" : "False";
 	    	
+	    	// Make email line
+	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
 	    	
+	    	// Write to Inbox and Outbox
+	    	File infile = FileHandler.getFile(recipient + "_inbox", "Emails/Inbox");
+			FileHandler.writeToFile(infile, insertedEmail);
+			File outFile = FileHandler.getFile(username + "_outbox", "Emails/Outbox");
+			FileHandler.writeToFile(outFile, insertedEmail);
+	    	
+			// Clean textfields 
 	    	usernameSendToPVField.clear();
 	    	headerPV.clear();
 	    	typeMessagePV.clear();
@@ -226,7 +241,7 @@ public class PatientView extends BorderPane {
     	// Email Body
     	TextArea emailBody = new TextArea();
     	emailBody.setEditable(false);
-    	emailBody.setText(theEmail.body.replace('~', '\n'));
+    	emailBody.setText(theEmail.body.replace('_', '\n'));
     	
     	// Action Buttons
     	Button replyButton = new Button();
