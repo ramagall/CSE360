@@ -310,7 +310,7 @@ public class PatientView extends BorderPane {
     	});
 	}
 	
-public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
+	public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
     	String[] info = newValue.split(" ");

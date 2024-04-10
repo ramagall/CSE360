@@ -56,7 +56,7 @@ public class LoginView extends VBox {
 	        	}
 	        	else if (doctorRecords.searchDoctor(userDoctor).getPass().equals(passDoctor)) {
 	        	
-	        		sceneViewer.changeView(new DoctorView(sceneViewer, doctorRecords, patientRecords));
+	        		sceneViewer.changeView(new DoctorView(sceneViewer, emailRecords, doctorRecords, patientRecords, userDoctor));
 	        	} else {
 	        		messageLabel.setText("Invalid Username or Password");
 	        	}
