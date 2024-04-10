@@ -2,7 +2,12 @@ package TheProject.Views;
 
 import TheProject.Records.*;
 import TheProject.Users.Patient;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import TheProject.SceneViewer;
+import TheProject.FileHandling.FileHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -30,7 +35,7 @@ public class DoctorView extends BorderPane{
 	    int month;
 	    int year;
 	    String user;
-	public DoctorView(SceneViewer sceneViewer, DoctorRecords doctorRecords, PatientRecords patientRecords) {
+	public DoctorView(SceneViewer sceneViewer, EmailRecords emailRecords, DoctorRecords doctorRecords, PatientRecords patientRecords, String username) {
 		super();
 		
 		Label welcomeDV = new Label("Doctor View.");
@@ -77,24 +82,91 @@ public class DoctorView extends BorderPane{
         // Tabs for patients - center
         patientDetailsTabsDV = new TabPane();
 
-        // Inbox and Send Message
-        TabPane emailTabPaneDV = new TabPane();
+      //Patients - Inbox and Send Message
+	    TabPane emailTabPaneDV = new TabPane();
 
-        // Inbox
-        Tab inboxTabDV = new Tab("Inbox");
-        inboxTabDV.setClosable(false);
-        inboxDV = new ListView<>();
-        inboxDV.getItems().addAll("Message 1", "Message 2", "Message 3");
-        inboxTabDV.setContent(inboxDV);
+	    //Inbox
+	    Tab inboxTabDV = new Tab("Inbox");
+	    inboxTabDV.setClosable(false);
+	    ListView<String> inboxDV = new ListView<>();
+	    
+	    // Populate Inbox with Email Headers
+	    ArrayList<Email> inbox = emailRecords.inboxList.get(username);
+	    try {
+	    	for (int i = 0; i < inbox.size(); i++) {
+		    	
+		    	Email currEmail = inbox.get(i);
+		    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
+		    	String header = currEmail.head + urgent;
+		    	inboxDV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (empty inbox)
+	    }
+	    inboxTabDV.setContent(inboxDV);
+	    
+	    // Outbox
+	    Tab sentMessagesDV = new Tab("Sent");
+	    sentMessagesDV.setClosable(false);
+	    ListView<String> outboxDV = new ListView<>();
+	    
+	    // Populate Outbox with Email Headers
+	    ArrayList<Email> outbox = emailRecords.outboxList.get(username);
+	    try {
+	    	for (int i = 0; i < outbox.size(); i++) {
+		    	
+		    	Email currEmail = outbox.get(i);
+		    	String recipient = currEmail.intendedPerson;
+		    	String header = "To: " + recipient + " - " + currEmail.head;
+		    	outboxDV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (outbox empty)
+	    }
+	    sentMessagesDV.setContent(outboxDV);
 
-        // Send a Message
-        Tab sendMessageTabNV = new Tab("Send a Message");
-        sendMessageTabNV.setClosable(false);
-        VBox sendMessageContent = new VBox();
-        sendMessageContent.getChildren().addAll(new Label("Sending message feature under development"));
-        sendMessageTabNV.setContent(sendMessageContent);
+	    //Send a Message
+	    Tab sendMessageTabDV = new Tab("Send a Message");
+	    sendMessageTabDV.setClosable(false);
 
-        emailTabPaneDV.getTabs().addAll(inboxTabDV, sendMessageTabNV);
+	    emailTabPaneDV.getTabs().addAll(inboxTabDV, sentMessagesDV, sendMessageTabDV);
+
+	    Label usernameSendToDV = new Label("Send To:");
+	    TextField usernameSendToDVField = new TextField();
+
+	    // Send To Field
+	    HBox user_sendToDV = new HBox(10);
+	    user_sendToDV.setPadding(new Insets(20));
+	    user_sendToDV.getChildren().addAll(usernameSendToDV, usernameSendToDVField);
+
+	    // Header Field
+	    TextField headerDV = new TextField();
+	    headerDV.setPromptText("Header...");
+	    
+	    // Message Body Field
+	    TextArea typeMessageDV = new TextArea();
+	    typeMessageDV.setPromptText("Type your message here...");
+	    typeMessageDV.setPrefRowCount(5);
+	    typeMessageDV.setPrefColumnCount(1);
+	    
+	    // Check Urgent Field
+	    CheckBox urgentDV = new CheckBox("Check if Urgent");
+	    Button submitDV = new Button("Send Message");
+	    Button cancelDV = new Button("Cancel");
+
+	    HBox buttonsBoxDV = new HBox(10);
+	    buttonsBoxDV.setPadding(new Insets(20));
+	    buttonsBoxDV.getChildren().addAll(urgentDV, submitDV, cancelDV);
+
+	    // Notification Label
+	    Label notifLabel = new Label("");
+	    
+	    // Complete Send Message
+	    VBox sendMessageDV = new VBox(10);
+	    sendMessageDV.setPadding(new Insets(20));
+	    sendMessageDV.getChildren().addAll(emailTabPaneDV, user_sendToDV, headerDV, typeMessageDV, buttonsBoxDV, notifLabel);
+
+	    sendMessageTabDV.setContent(sendMessageDV);
 
         super.setTop(titleBoxDV);
         super.setLeft(searchPatientBoxDV);
@@ -111,8 +183,221 @@ public class DoctorView extends BorderPane{
             	updatePatientDetails(newValue, patientRecords);
             }
         });
+	    
+	    // Switch to Outbox
+	    outboxDV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	viewOutboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords);
+            }
+        });
+	    
+	    // Switch to Inbox
+	    inboxDV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	viewInboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords,
+            			emailTabPaneDV, sendMessageTabDV, usernameSendToDVField, headerDV);
+            }
+        });
+	    
+	    // Send Email Button
+	    submitDV.setOnAction(e -> {
+	    	
+	    	// Gather info from textfields
+	    	String recipient = usernameSendToDVField.getText();
+	    	String header = headerDV.getText();
+	    	String body = typeMessageDV.getText().replace('\n', '_');
+	    	String isUrgent = urgentDV.isSelected() ? "True" : "False";
+	    	
+	    	// Make email line
+	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
+	    	
+	    	// Write to Email Records
+	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
+	    	ArrayList<Email> outTemp = emailRecords.outboxList.get(username);
+	    	Email insertEmail = new Email(recipient, username, isUrgent, header, body);
+	    	inTemp.add(insertEmail);
+	    	outTemp.add(insertEmail);
+	    	emailRecords.inboxList.put(recipient, inTemp);
+	    	emailRecords.outboxList.put(username, outTemp);
+	    	
+	    	// Write to Inbox and Outbox
+	    	File infile = FileHandler.getFile(recipient + "_inbox", "Emails/Inbox");
+			FileHandler.writeToFile(infile, insertedEmail);
+			File outFile = FileHandler.getFile(username + "_outbox", "Emails/Outbox");
+			FileHandler.writeToFile(outFile, insertedEmail);
+	    	
+			// Clean textfields 
+	    	usernameSendToDVField.clear();
+	    	usernameSendToDVField.setEditable(true);
+	    	headerDV.clear();
+	    	headerDV.setEditable(true);
+	    	typeMessageDV.clear();
+	    	urgentDV.setSelected(false);
+	    	notifLabel.setText("Email successfully sent.");
+	    });
+	    
+	    cancelDV.setOnAction(e -> {
+	    	
+	    	// Clean textfields 
+	    	usernameSendToDVField.clear();
+	    	usernameSendToDVField.setEditable(true);
+	    	headerDV.clear();
+	    	headerDV.setEditable(true);
+	    	typeMessageDV.clear();
+	    	urgentDV.setSelected(false);
+	    	
+	    	sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+	    });
 
 	}
+	
+	public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords,
+			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
+		
+		// Find Email: Derive Header
+    	String[] info = newValue.split(" ");
+    	StringBuilder header = new StringBuilder();
+    	for (int i = 0; i < info.length - 1; i++) {
+    		header.append(info[i]);
+    	}
+    	String theHeader = header.toString();
+    	Email theEmail = new Email();
+    	
+    	// Find Email: Search Records
+    	ArrayList<Email> log = emailRecords.inboxList.get(username);
+    	for (int i = 0; i < log.size(); i++) {
+    		
+    		theEmail = log.get(i);
+    		if (theEmail.head.equals(theHeader)) {
+    			break;
+    		}
+    	}
+    	
+    	// From user UI
+    	Label fromUser = new Label("From: ");
+    	TextField fromUserField = new TextField();
+    	fromUserField.setEditable(false);
+    	fromUserField.setText(theEmail.sender);
+    	
+    	HBox fromUserUI = new HBox(10);
+    	fromUserUI.setPadding(new Insets(20));
+    	fromUserUI.getChildren().addAll(fromUser, fromUserField);
+    	
+    	// Email Header
+    	TextField emailHeader = new TextField();
+    	emailHeader.setEditable(false);
+    	emailHeader.setText(theEmail.head);
+    	
+    	// Email Body
+    	TextArea emailBody = new TextArea();
+    	emailBody.setEditable(false);
+    	emailBody.setText(theEmail.body.replace('_', '\n'));
+    	
+    	// Action Buttons
+    	Button replyButton = new Button();
+    	replyButton.setText("Reply...");
+    	Button exitButton = new Button();
+    	exitButton.setText("Exit Email");
+    	
+    	HBox actionButtons = new HBox(10);
+    	actionButtons.setPadding(new Insets(20));
+    	actionButtons.getChildren().addAll(replyButton, exitButton);
+    	
+    	// Email Details Screen
+    	TabPane emailDetails = new TabPane();
+    	Tab viewEmail = new Tab("Email from " + theEmail.sender);
+    	viewEmail.setClosable(false);
+    	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
+    	
+    	// Pass email to reply action
+    	final Email passEmail = theEmail;
+    	
+    	emailDetails.getTabs().add(viewEmail);
+    	super.setRight(emailDetails);
+    	
+    	exitButton.setOnAction(e -> {
+    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		// Fixed the BUG
+    	});
+    	
+    	replyButton.setOnAction(e -> {
+    		
+    		emailTabPanePV.getSelectionModel().select(sendMessageTabPV);
+    		
+    		usernameSendToPVField.setText(passEmail.sender);
+    		usernameSendToPVField.setEditable(false);
+    		String head = "Re: " + passEmail.head;
+    		headerPV.setText(head);
+    		headerPV.setEditable(false);
+    		
+    		super.setRight(emailTabPanePV);
+    	});
+	}
+	
+	public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
+		
+		// Find Email: Derive Header
+    	String[] info = newValue.split(" ");
+    	StringBuilder header = new StringBuilder();
+    	for (int i = 0; i < info.length - 1; i++) {
+    		header.append(info[i]);
+    	}
+    	String theHeader = header.toString();
+    	Email theEmail = new Email();
+    	
+    	// Find Email: Search Records
+    	ArrayList<Email> log = emailRecords.outboxList.get(username);
+    	for (int i = 0; i < log.size(); i++) {
+    		
+    		theEmail = log.get(i);
+    		if (theEmail.head.equals(theHeader)) {
+    			break;
+    		}
+    	}
+    	
+    	// From user UI
+    	Label fromUser = new Label("To: ");
+    	TextField fromUserField = new TextField();
+    	fromUserField.setEditable(false);
+    	fromUserField.setText(theEmail.sender);
+    	
+    	HBox fromUserUI = new HBox(10);
+    	fromUserUI.setPadding(new Insets(20));
+    	fromUserUI.getChildren().addAll(fromUser, fromUserField);
+    	
+    	// Email Header
+    	TextField emailHeader = new TextField();
+    	emailHeader.setEditable(false);
+    	emailHeader.setText(theEmail.head);
+    	
+    	// Email Body
+    	TextArea emailBody = new TextArea();
+    	emailBody.setEditable(false);
+    	emailBody.setText(theEmail.body.replace('_', '\n'));
+    	
+    	// Action Buttons
+    	Button exitButton = new Button();
+    	exitButton.setText("Exit Email");
+    	
+    	HBox actionButtons = new HBox(10);
+    	actionButtons.setPadding(new Insets(20));
+    	actionButtons.getChildren().addAll(exitButton);
+    	
+    	// Email Details Screen
+    	TabPane emailDetails = new TabPane();
+    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	viewEmail.setClosable(false);
+    	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
+    	
+    	emailDetails.getTabs().add(viewEmail);
+    	super.setRight(emailDetails);
+    	
+    	exitButton.setOnAction(e -> {
+    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		// Fixed the BUG
+    	});
+	}
+	
 	private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
         // Clear previous content
     	Patient thePatient = patientRecords.searchByName(selectedPatient);
