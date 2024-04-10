@@ -186,6 +186,15 @@ public class PatientView extends BorderPane {
 	    	// Make email line
 	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
 	    	
+	    	// Write to Email Records
+	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
+	    	ArrayList<Email> outTemp = emailRecords.outboxList.get(username);
+	    	Email insertEmail = new Email(recipient, username, isUrgent, header, body);
+	    	inTemp.add(insertEmail);
+	    	outTemp.add(insertEmail);
+	    	emailRecords.inboxList.put(recipient, inTemp);
+	    	emailRecords.outboxList.put(username, outTemp);
+	    	
 	    	// Write to Inbox and Outbox
 	    	File infile = FileHandler.getFile(recipient + "_inbox", "Emails/Inbox");
 			FileHandler.writeToFile(infile, insertedEmail);
@@ -306,8 +315,6 @@ public class PatientView extends BorderPane {
 	    Label insurance = new Label("Insurance: " + currentUser.getInsuranceType());
 
 	    insuranceTabPV.setContent(new VBox(insurance));
-
-
 
 	     Label healthIssues1 = new Label("Prior Health Issues");
 
