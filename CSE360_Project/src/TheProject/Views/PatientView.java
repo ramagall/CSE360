@@ -186,7 +186,7 @@ public class PatientView extends BorderPane {
 	    	String isUrgent = urgentPV.isSelected() ? "True" : "False";
 	    	
 	    	// Make email line
-	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
+	    	String insertedEmail = recipient + "~" + username + "~" + isUrgent + "~" + header + "~" + body;
 	    	
 	    	// Write to Email Records
 	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
@@ -199,9 +199,9 @@ public class PatientView extends BorderPane {
 	    	
 	    	// Write to Inbox and Outbox
 	    	File infile = FileHandler.getFile(recipient + "_inbox", "Emails/Inbox");
-			FileHandler.writeToFile(infile, insertedEmail);
+			FileHandler.FileReplace(infile.getPath(), insertedEmail);
 			File outFile = FileHandler.getFile(username + "_outbox", "Emails/Outbox");
-			FileHandler.writeToFile(outFile, insertedEmail);
+			FileHandler.FileReplace(outFile.getPath(), insertedEmail);
 	    	
 			// Clean textfields 
 	    	usernameSendToPVField.clear();
@@ -211,6 +211,8 @@ public class PatientView extends BorderPane {
 	    	typeMessagePV.clear();
 	    	urgentPV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
+	    	
+	    	sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
 	    });
 	    
 	    cancelPV.setOnAction(e -> {

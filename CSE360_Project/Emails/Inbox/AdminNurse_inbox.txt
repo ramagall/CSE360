@@ -1,2 +1,4 @@
 AdminNurse
-AdminPatient~AdminNurse~True~I'm Gonna Talk to Your Manager~Count your days_I swear
+AdminNurse~AdminPatient~False~Re: You Are Cooked!~No. I'm not.
+AdminNurse~AdminPatient~True~Bad Nurse~smh
+AdminNurse~AdminPatient~False~Re: You Are Cooked!~raging
