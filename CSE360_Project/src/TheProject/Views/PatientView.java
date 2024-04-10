@@ -30,7 +30,8 @@ public class PatientView extends BorderPane {
 		Patient theUser = new Patient("None","None");
 	    Label welcomePV = new Label("Patient View.");
 	    HBox titleBoxPV = new HBox(welcomePV);
-	    //System.out.println(username);
+	    //System.out.println(username); 
+	    
 	    //Patients list 
 	    ListView<String> visitListPV = new ListView<>();
 	    for(Patient value: patientRecords.patientList.values())
@@ -60,20 +61,18 @@ public class PatientView extends BorderPane {
 	    ListView<String> inboxPV = new ListView<>();
 	    
 	    // Populate Inbox with Email Headers
-	    try {
 	    ArrayList<Email> inbox = emailRecords.inboxList.get(username);
-	    for (int i = 0; i < inbox.size(); i++) {
-	    	
-	    	Email currEmail = inbox.get(i);
-	    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
-	    	String header = currEmail.head + urgent;
-	    	inboxPV.getItems().add(header);
+	    try {
+	    	for (int i = 0; i < inbox.size(); i++) {
+		    	
+		    	Email currEmail = inbox.get(i);
+		    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
+		    	String header = currEmail.head + urgent;
+		    	inboxPV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (empty inbox)
 	    }
-	    } catch (NullPointerException e)
-	    {
-	    	//Nothing
-	    }
-	    
 	    inboxTabPV.setContent(inboxPV);
 	    
 	    // Outbox
@@ -82,18 +81,17 @@ public class PatientView extends BorderPane {
 	    ListView<String> outboxPV = new ListView<>();
 	    
 	    // Populate Outbox with Email Headers
-	    try {
 	    ArrayList<Email> outbox = emailRecords.outboxList.get(username);
-	    for (int i = 0; i < outbox.size(); i++) {
-	    	
-	    	Email currEmail = outbox.get(i);
-	    	String recipient = currEmail.intendedPerson;
-	    	String header = "To: " + recipient + " - " + currEmail.head;
-	    	outboxPV.getItems().add(header);
-	    }
-	    } catch(NullPointerException e)
-	    {
-	    	//
+	    try {
+	    	for (int i = 0; i < outbox.size(); i++) {
+		    	
+		    	Email currEmail = outbox.get(i);
+		    	String recipient = currEmail.intendedPerson;
+		    	String header = "To: " + recipient + " - " + currEmail.head;
+		    	outboxPV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (outbox empty)
 	    }
 	    sentMessagesPV.setContent(outboxPV);
 
@@ -103,49 +101,39 @@ public class PatientView extends BorderPane {
 
 	    emailTabPanePV.getTabs().addAll(inboxTabPV, sentMessagesPV, sendMessageTabPV);
 
-	    TextArea typeMessagePV = new TextArea();
-	    typeMessagePV.setPromptText("Type your message here:");
-	    typeMessagePV.setPrefRowCount(5);
-	    typeMessagePV.setPrefColumnCount(1);
-	    Label sendAMessageToLabelPV = new Label( "Send a message to: ");
-	    RadioButton doctorButtonPV = new RadioButton("Doctor");
-	    RadioButton nurseButtonPV = new RadioButton("Nurse");
-	    ToggleGroup sendMessageToPV = new ToggleGroup();
-	    doctorButtonPV.setToggleGroup(sendMessageToPV);
-	    nurseButtonPV.setToggleGroup(sendMessageToPV);
-
-	    HBox sendMessageToPVBox = new HBox(10, doctorButtonPV, nurseButtonPV);
-
-	    Label usernameSendToPV = new Label("Username:");
+	    Label usernameSendToPV = new Label("Send To:");
 	    TextField usernameSendToPVField = new TextField();
 
+	    // Send To Field
 	    HBox user_sendToPV = new HBox(10);
 	    user_sendToPV.setPadding(new Insets(20));
 	    user_sendToPV.getChildren().addAll(usernameSendToPV, usernameSendToPVField);
 
-	    Label passwordSendToPV = new Label("Password:");
-	    PasswordField passwordSendToPVField = new PasswordField();
-
-	    HBox pass_sendToPV = new HBox(10);
-	    pass_sendToPV.setPadding(new Insets(20));
-	    pass_sendToPV.getChildren().addAll(passwordSendToPV, passwordSendToPVField);
-
+	    // Header Field
+	    TextField headerPV = new TextField();
+	    headerPV.setPromptText("Header...");
+	    
+	    // Message Body Field
+	    TextArea typeMessagePV = new TextArea();
+	    typeMessagePV.setPromptText("Type your message here...");
+	    typeMessagePV.setPrefRowCount(5);
+	    typeMessagePV.setPrefColumnCount(1);
+	    
+	    // Check Urgent Field
 	    CheckBox urgentPV = new CheckBox("Check if Urgent");
-	    Button submitPV = new Button("Submit");
+	    Button submitPV = new Button("Send Message");
 
 	    HBox buttonsBoxPV = new HBox(10);
 	    buttonsBoxPV.setPadding(new Insets(20));
 	    buttonsBoxPV.getChildren().addAll(urgentPV, submitPV);
 
+	    // Notification Label
+	    Label notifLabel = new Label("");
+	    
+	    // Complete Send Message
 	    VBox sendMessagePV = new VBox(10);
 	    sendMessagePV.setPadding(new Insets(20));
-	    sendMessagePV.getChildren().addAll(emailTabPanePV,
-	                                       typeMessagePV, 
-	                                       sendAMessageToLabelPV, 
-	                                       sendMessageToPVBox, 
-	                                       user_sendToPV, 
-	                                       pass_sendToPV, 
-	                                       buttonsBoxPV);
+	    sendMessagePV.getChildren().addAll(emailTabPanePV, user_sendToPV, headerPV, typeMessagePV, buttonsBoxPV, notifLabel);
 
 	    sendMessageTabPV.setContent(sendMessagePV);
 
@@ -170,17 +158,52 @@ public class PatientView extends BorderPane {
             }
         });
 	    
+	    // Switch to Outbox
 	    outboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
             	System.out.println("BOZO");
             }
         });
 	    
+	    // Switch to Inbox
 	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	System.out.println("BOZO");
+            	
+            	// Get Email from Records
+            	String[] info = newValue.split(" ");
+            	StringBuilder header = new StringBuilder();
+            	for (int i = 0; i < info.length - 1; i++) {
+            		header.append(info[i]);
+            	}
+            	
+            	// Email selectedEmail = emailRecords.inboxList()
+            	
+            	// From user UI
+            	Label fromUser = new Label("From: ");
+            	TextField fromUserField = new TextField();
+            	fromUserField.setEditable(false);
+            	
+            	
+            	fromUserField.setText("");
+            	
+            	// Email Details Screen
+            	VBox emailDetails = new VBox(10);
+            	emailDetails.setPadding(new Insets(20));
+            	super.setRight(emailDetails);
             }
         });
+	    
+	    // Send Email Button
+	    submitPV.setOnAction(e -> {
+	    	
+	    	// send actual email FILE I/O
+	    	
+	    	usernameSendToPVField.clear();
+	    	headerPV.clear();
+	    	typeMessagePV.clear();
+	    	urgentPV.setSelected(false);
+	    	notifLabel.setText("Email successfully sent.");
+	    });
 	}
 	
 	public void viewVisitDetails(String user, String theDate, PatientRecords patientRecords){
@@ -244,5 +267,4 @@ public class PatientView extends BorderPane {
 	     patientHistoryTabPV.setContent(comb);
 	     super.setCenter(patientDetailsTabsPV);
 	}
-	
 }
