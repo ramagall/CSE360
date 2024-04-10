@@ -10,6 +10,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
     	SceneViewer sceneViewer = new SceneViewer(800, 600);
         sceneViewer.setLoginView();
+        sceneViewer.getStylesheets().add(getClass().getResource("login.css").toExternalForm());
 
         primaryStage.setTitle("CSE360_Project_Fall");
         primaryStage.setScene(sceneViewer);
