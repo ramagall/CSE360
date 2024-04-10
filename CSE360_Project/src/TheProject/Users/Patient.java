@@ -1,6 +1,7 @@
 package TheProject.Users;
 
 import java.util.HashMap;
+import java.time.*;
 import java.util.Map;
 
 public class Patient {
@@ -11,6 +12,7 @@ public class Patient {
 	  private String password;
 	  private String dob;
 	  private String insuranceType;
+	  private int age;
 	  public Map <String, String[]> visits;
 	  
 	  public Patient(String username, String password) {
@@ -104,6 +106,22 @@ public class Patient {
 
 	  public String getDOB() {
 	    return dob;
+	  }
+	  
+
+	  public int getAge(){
+		  
+		  LocalDate currentDate = LocalDate.now();
+	       
+      	String[] values = dob.split("/");
+  	  int day = Integer.parseInt(values[0]);
+       int month = Integer.parseInt(values[1]);
+      int year = Integer.parseInt(values[2]);
+  		  LocalDate birthday = LocalDate.of(year, month, day);
+  		  Period dateDifference = Period.between(birthday, currentDate);      	
+		  
+  		  age = dateDifference.getYears();
+  		  return age;
 	  }
 	  
 	  public void setInsuranceType(String insuranceType) {

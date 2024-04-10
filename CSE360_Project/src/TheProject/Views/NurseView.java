@@ -77,6 +77,13 @@ public class NurseView extends BorderPane {
         inboxNV.getItems().addAll("Message 1", "Message 2", "Message 3");
         inboxTabNV.setContent(inboxNV);
 
+        //Sent
+        Tab sentMessagesNV = new Tab("Sent");
+	    sentMessagesNV.setClosable(false);
+	    ListView<String> outboxNV = new ListView<>();
+	    outboxNV.getItems().addAll("Sent 1", "Sent 2", "Sent 3");
+	    sentMessagesNV.setContent(outboxNV);
+        
         // Send a Message
         Tab sendMessageTabNV = new Tab("Send a Message");
         sendMessageTabNV.setClosable(false);
@@ -84,7 +91,7 @@ public class NurseView extends BorderPane {
         sendMessageContent.getChildren().addAll(new Label("Sending message feature under development"));
         sendMessageTabNV.setContent(sendMessageContent);
 
-        emailTabPaneNV.getTabs().addAll(inboxTabNV, sendMessageTabNV);
+        emailTabPaneNV.getTabs().addAll(inboxTabNV, sendMessageTabNV,sentMessagesNV);
 
         super.setTop(titleBoxNV);
         super.setLeft(searchPatientBoxNV);
@@ -156,8 +163,9 @@ public class NurseView extends BorderPane {
         inputInfoButton.setOnAction(e -> 
         {
         	
-        	if( year > 2012)
+        	if( thePatient.getAge() < 12)
         	{
+        		System.out.print(thePatient.getAge());
         		Label ageLimit = new Label("not Old enugh");
         		vitalsContent.getChildren().add(ageLimit);
         		vitalsTabNV.setContent(vitalsContent);

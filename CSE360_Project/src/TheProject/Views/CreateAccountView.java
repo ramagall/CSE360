@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -33,6 +34,140 @@ public class CreateAccountView extends VBox {
     day.setPromptText("DD");
     TextField year = new TextField();
     year.setPromptText("YYYY");
+    
+    
+    
+    TextFormatter<String> formatter = new TextFormatter<>(change -> {
+        if (change.isDeleted()) {
+            return change; // Allow deletion of characters
+        }
+
+        // Reject non-numeric characters
+        if (!change.getControlNewText().matches("\\d*")) {
+            return null;
+        }
+        
+
+        // Limit the length
+        int maxLength = 2; // Set your desired maximum length here
+        if (change.getControlNewText().length() > maxLength) {
+            return null;
+        }
+        
+        try {
+            int monthValue = Integer.parseInt(change.getControlNewText());
+            if (monthValue < 1 || monthValue > 12) {
+                return null;
+            }
+        }
+        catch (NumberFormatException e) {
+            return null; // Return null if parsing fails
+        }
+
+        return change;
+    });
+    
+    TextFormatter<String> formatter2 = new TextFormatter<>(change -> {
+        if (change.isDeleted()) {
+            return change; // Allow deletion of characters
+        }
+
+        // Reject non-numeric characters
+        if (!change.getControlNewText().matches("\\d*")) {
+            return null;
+        }
+        
+
+        // Limit the length
+        int maxLength = 2; // Set your desired maximum length here
+        if (change.getControlNewText().length() > maxLength) {
+            return null;
+        }
+        
+        try {
+            int monthValue = Integer.parseInt(change.getControlNewText());
+            if (monthValue < 1 || monthValue > 31) {
+                return null;
+            }
+        }
+        catch (NumberFormatException e) {
+            return null; // Return null if parsing fails
+        }
+
+        return change;
+    });
+    
+    TextFormatter<String> formatter3 = new TextFormatter<>(change -> {
+        if (change.isDeleted()) {
+            return change; // Allow deletion of characters
+        }
+
+        // Reject non-numeric characters
+        if (!change.getControlNewText().matches("\\d*")) {
+            return null;
+        }
+        
+
+        // Limit the length
+        int maxLength = 4; // Set your desired maximum length here
+        if (change.getControlNewText().length() > maxLength) {
+            return null;
+        }
+        
+        try {
+            int yearValue = Integer.parseInt(change.getControlNewText());
+            if (yearValue < 0 || yearValue > 2024) {
+                return null;
+            }
+        }
+        catch (NumberFormatException e) {
+            return null; // Return null if parsing fails
+        }
+
+        return change;
+    });
+    
+    month.setTextFormatter(formatter);
+	month.textProperty().addListener((observable, oldValue, newValue) -> {
+		
+		 int max = 10; // Set your desired maximum length here
+
+		    if (newValue.length() > max) {
+		        // Trim the text to the maximum length
+		        String trimmedText = newValue.substring(0, max);
+		        month.setText(trimmedText);
+		    }
+		
+		
+	});
+	
+	day.setTextFormatter(formatter2);
+	day.textProperty().addListener((observable, oldValue, newValue) -> {
+		
+		 int max = 10; // Set your desired maximum length here
+
+		    if (newValue.length() > max) {
+		        // Trim the text to the maximum length
+		        String trimmedText = newValue.substring(0, max);
+		        day.setText(trimmedText);
+		    }
+		
+		
+	});
+	
+	year.setTextFormatter(formatter3);
+	year.textProperty().addListener((observable, oldValue, newValue) -> {
+		
+		 int max = 10; // Set your desired maximum length here
+
+		    if (newValue.length() > max) {
+		        // Trim the text to the maximum length
+		        String trimmedText = newValue.substring(0, max);
+		        year.setText(trimmedText);
+		    }
+		
+		
+	});
 
     HBox dateOfBirth = new HBox(10);
     dateOfBirth.setPadding(new Insets(20));
