@@ -168,28 +168,7 @@ public class PatientView extends BorderPane {
 	    // Switch to Inbox
 	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	
-            	// Get Email from Records
-            	String[] info = newValue.split(" ");
-            	StringBuilder header = new StringBuilder();
-            	for (int i = 0; i < info.length - 1; i++) {
-            		header.append(info[i]);
-            	}
-            	
-            	// Email selectedEmail = emailRecords.inboxList()
-            	
-            	// From user UI
-            	Label fromUser = new Label("From: ");
-            	TextField fromUserField = new TextField();
-            	fromUserField.setEditable(false);
-            	
-            	
-            	fromUserField.setText("");
-            	
-            	// Email Details Screen
-            	VBox emailDetails = new VBox(10);
-            	emailDetails.setPadding(new Insets(20));
-            	super.setRight(emailDetails);
+            	viewInboxEmailDetails(username, newValue, emailTabPanePV, patientRecords, emailRecords);
             }
         });
 	    
@@ -198,12 +177,91 @@ public class PatientView extends BorderPane {
 	    	
 	    	// send actual email FILE I/O
 	    	
+	    	
 	    	usernameSendToPVField.clear();
 	    	headerPV.clear();
 	    	typeMessagePV.clear();
 	    	urgentPV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
 	    });
+	}
+	
+	public void viewInboxEmailDetails(String username, String newValue, TabPane emailTabPanePV, PatientRecords patientRecords, EmailRecords emailRecords) {
+		
+		// Find Email: Derive Header
+    	String[] info = newValue.split(" ");
+    	StringBuilder header = new StringBuilder();
+    	for (int i = 0; i < info.length - 1; i++) {
+    		header.append(info[i]);
+    	}
+    	String theHeader = header.toString();
+    	
+    	Email theEmail = new Email();
+    	
+    	// Find Email: Search Records
+    	ArrayList<Email> log = emailRecords.inboxList.get(username);
+    	for (int i = 0; i < log.size(); i++) {
+    		
+    		theEmail = log.get(i);
+    		if (theEmail.head.equals(theHeader)) {
+    			break;
+    		}
+    	}
+    	
+    	// From user UI
+    	Label fromUser = new Label("From: ");
+    	TextField fromUserField = new TextField();
+    	fromUserField.setEditable(false);
+    	fromUserField.setText(theEmail.sender);
+    	
+    	HBox fromUserUI = new HBox(10);
+    	fromUserUI.setPadding(new Insets(20));
+    	fromUserUI.getChildren().addAll(fromUser, fromUserField);
+    	
+    	// Email Header
+    	TextField emailHeader = new TextField();
+    	emailHeader.setEditable(false);
+    	emailHeader.setText(theEmail.head);
+    	
+    	// Email Body
+    	TextArea emailBody = new TextArea();
+    	emailBody.setEditable(false);
+    	emailBody.setText(theEmail.body.replace('~', '\n'));
+    	
+    	// Action Buttons
+    	Button replyButton = new Button();
+    	replyButton.setText("Reply...");
+    	Button exitButton = new Button();
+    	exitButton.setText("Exit Email");
+    	
+    	HBox actionButtons = new HBox(10);
+    	actionButtons.setPadding(new Insets(20));
+    	actionButtons.getChildren().addAll(replyButton, exitButton);
+    	
+    	// Email Details Screen
+    	TabPane emailDetails = new TabPane();
+    	Tab viewEmail = new Tab("Email from " + theEmail.sender);
+    	viewEmail.setClosable(false);
+    	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
+    	
+    	emailDetails.getTabs().add(viewEmail);
+    	super.setRight(emailDetails);
+    	
+    	exitButton.setOnAction(e -> {
+    		super.setRight(emailTabPanePV);
+    		
+    		// BUG: email cannot be viewed twice
+    	});
+    	
+    	replyButton.setOnAction(e -> {
+    		
+    		// call reply to email for UI and file yada yada
+    	});
+	}
+	
+	public void replyToEmail(String username, String recipient, PatientRecords patientRecords, EmailRecords emailRecords) {
+		
+		//
 	}
 	
 	public void viewVisitDetails(String user, String theDate, PatientRecords patientRecords){

@@ -7,6 +7,10 @@ public class Email{
 	public String head;
 	public String body;
 	
+	public Email() {
+		//empty email
+	}
+	
 	public Email(String intendedPerson, String sender, String urgency, String head, String body) {
 		this.intendedPerson = intendedPerson;
 		this.sender = sender;
