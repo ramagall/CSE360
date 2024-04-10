@@ -170,7 +170,7 @@ public class PatientView extends BorderPane {
 	    // Switch to Inbox
 	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	viewInboxEmailDetails(username, newValue, emailTabPanePV, patientRecords, emailRecords);
+            	viewInboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords);
             }
         });
 	    
@@ -210,7 +210,7 @@ public class PatientView extends BorderPane {
 	    });
 	}
 	
-	public void viewInboxEmailDetails(String username, String newValue, TabPane emailTabPanePV, PatientRecords patientRecords, EmailRecords emailRecords) {
+	public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
     	String[] info = newValue.split(" ");
@@ -219,7 +219,6 @@ public class PatientView extends BorderPane {
     		header.append(info[i]);
     	}
     	String theHeader = header.toString();
-    	
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
@@ -272,9 +271,8 @@ public class PatientView extends BorderPane {
     	super.setRight(emailDetails);
     	
     	exitButton.setOnAction(e -> {
-    		super.setRight(emailTabPanePV);
-    		
-    		// BUG: email cannot be viewed twice
+    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		// Fixed the BUG
     	});
     	
     	replyButton.setOnAction(e -> {
