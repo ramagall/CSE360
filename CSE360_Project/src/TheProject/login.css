@@ -3,7 +3,7 @@
 }
 
 .grid-pane, .vbox, .hbox {
-    -fx-padding: 20px;
+    -fx-padding: 21px;
     -fx-vgap: 10px;
     -fx-hgap: 10px;
     -fx-background-color: #ffffff;
