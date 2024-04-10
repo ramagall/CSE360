@@ -2,6 +2,9 @@ package TheProject.Views;
 
 import TheProject.Records.*;
 import TheProject.Users.Patient;
+
+import java.util.ArrayList;
+
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -55,13 +58,32 @@ public class PatientView extends BorderPane {
 	    Tab inboxTabPV = new Tab("Inbox");
 	    inboxTabPV.setClosable(false);
 	    ListView<String> inboxPV = new ListView<>();
-	    inboxPV.getItems().addAll("Message 1", "Message 2", "Message 3");
+	    
+	    // Populate Inbox with Email Headers
+	    ArrayList<Email> inbox = emailRecords.inboxList.get(username);
+	    for (int i = 0; i < inbox.size(); i++) {
+	    	
+	    	Email currEmail = inbox.get(i);
+	    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
+	    	String header = currEmail.head + urgent;
+	    	inboxPV.getItems().add(header);
+	    }
 	    inboxTabPV.setContent(inboxPV);
 	    
+	    // Outbox
 	    Tab sentMessagesPV = new Tab("Sent");
 	    sentMessagesPV.setClosable(false);
 	    ListView<String> outboxPV = new ListView<>();
-	    outboxPV.getItems().addAll("Sent 1", "Sent 2", "Sent 3");
+	    
+	    // Populate Outbox with Email Headers
+	    ArrayList<Email> outbox = emailRecords.outboxList.get(username);
+	    for (int i = 0; i < outbox.size(); i++) {
+	    	
+	    	Email currEmail = outbox.get(i);
+	    	String recipient = currEmail.intendedPerson;
+	    	String header = "To: " + recipient + " - " + currEmail.head;
+	    	outboxPV.getItems().add(header);
+	    }
 	    sentMessagesPV.setContent(outboxPV);
 
 	    //Send a Message
