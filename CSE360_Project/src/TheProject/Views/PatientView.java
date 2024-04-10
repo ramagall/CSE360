@@ -31,6 +31,7 @@ public class PatientView extends BorderPane {
 	    Label welcomePV = new Label("Patient View.");
 	    HBox titleBoxPV = new HBox(welcomePV);
 	    //System.out.println(username);
+	    
 	    //Patients list 
 	    ListView<String> visitListPV = new ListView<>();
 	    for(Patient value: patientRecords.patientList.values())
@@ -61,12 +62,16 @@ public class PatientView extends BorderPane {
 	    
 	    // Populate Inbox with Email Headers
 	    ArrayList<Email> inbox = emailRecords.inboxList.get(username);
-	    for (int i = 0; i < inbox.size(); i++) {
-	    	
-	    	Email currEmail = inbox.get(i);
-	    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
-	    	String header = currEmail.head + urgent;
-	    	inboxPV.getItems().add(header);
+	    try {
+	    	for (int i = 0; i < inbox.size(); i++) {
+		    	
+		    	Email currEmail = inbox.get(i);
+		    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
+		    	String header = currEmail.head + urgent;
+		    	inboxPV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (empty inbox)
 	    }
 	    inboxTabPV.setContent(inboxPV);
 	    
@@ -77,12 +82,16 @@ public class PatientView extends BorderPane {
 	    
 	    // Populate Outbox with Email Headers
 	    ArrayList<Email> outbox = emailRecords.outboxList.get(username);
-	    for (int i = 0; i < outbox.size(); i++) {
-	    	
-	    	Email currEmail = outbox.get(i);
-	    	String recipient = currEmail.intendedPerson;
-	    	String header = "To: " + recipient + " - " + currEmail.head;
-	    	outboxPV.getItems().add(header);
+	    try {
+	    	for (int i = 0; i < outbox.size(); i++) {
+		    	
+		    	Email currEmail = outbox.get(i);
+		    	String recipient = currEmail.intendedPerson;
+		    	String header = "To: " + recipient + " - " + currEmail.head;
+		    	outboxPV.getItems().add(header);
+		    }
+	    } catch (NullPointerException e) {
+	    	// do nothing (outbox empty)
 	    }
 	    sentMessagesPV.setContent(outboxPV);
 
@@ -91,33 +100,18 @@ public class PatientView extends BorderPane {
 	    sendMessageTabPV.setClosable(false);
 
 	    emailTabPanePV.getTabs().addAll(inboxTabPV, sentMessagesPV, sendMessageTabPV);
-
+	    
 	    TextArea typeMessagePV = new TextArea();
 	    typeMessagePV.setPromptText("Type your message here:");
 	    typeMessagePV.setPrefRowCount(5);
 	    typeMessagePV.setPrefColumnCount(1);
-	    Label sendAMessageToLabelPV = new Label( "Send a message to: ");
-	    RadioButton doctorButtonPV = new RadioButton("Doctor");
-	    RadioButton nurseButtonPV = new RadioButton("Nurse");
-	    ToggleGroup sendMessageToPV = new ToggleGroup();
-	    doctorButtonPV.setToggleGroup(sendMessageToPV);
-	    nurseButtonPV.setToggleGroup(sendMessageToPV);
 
-	    HBox sendMessageToPVBox = new HBox(10, doctorButtonPV, nurseButtonPV);
-
-	    Label usernameSendToPV = new Label("Username:");
+	    Label usernameSendToPV = new Label("Send To:");
 	    TextField usernameSendToPVField = new TextField();
 
 	    HBox user_sendToPV = new HBox(10);
 	    user_sendToPV.setPadding(new Insets(20));
 	    user_sendToPV.getChildren().addAll(usernameSendToPV, usernameSendToPVField);
-
-	    Label passwordSendToPV = new Label("Password:");
-	    PasswordField passwordSendToPVField = new PasswordField();
-
-	    HBox pass_sendToPV = new HBox(10);
-	    pass_sendToPV.setPadding(new Insets(20));
-	    pass_sendToPV.getChildren().addAll(passwordSendToPV, passwordSendToPVField);
 
 	    CheckBox urgentPV = new CheckBox("Check if Urgent");
 	    Button submitPV = new Button("Submit");
@@ -128,13 +122,7 @@ public class PatientView extends BorderPane {
 
 	    VBox sendMessagePV = new VBox(10);
 	    sendMessagePV.setPadding(new Insets(20));
-	    sendMessagePV.getChildren().addAll(emailTabPanePV,
-	                                       typeMessagePV, 
-	                                       sendAMessageToLabelPV, 
-	                                       sendMessageToPVBox, 
-	                                       user_sendToPV, 
-	                                       pass_sendToPV, 
-	                                       buttonsBoxPV);
+	    sendMessagePV.getChildren().addAll(emailTabPanePV, user_sendToPV, typeMessagePV, buttonsBoxPV);
 
 	    sendMessageTabPV.setContent(sendMessagePV);
 
