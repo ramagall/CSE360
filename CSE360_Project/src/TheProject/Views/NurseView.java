@@ -63,6 +63,18 @@ public class NurseView extends BorderPane {
         Button searchPatientNV = new Button("Search");
         Button nurseLogout = new Button("Logout");
         VBox searchPatientBoxNV = new VBox(searchedPatientFieldNV, patientListNV, searchPatientNV, nurseLogout);
+        searchPatientNV.setOnAction(e -> {
+            String searchText = searchedPatientFieldNV.getText().toLowerCase(); 
+            patientListNV.getItems().clear();
+
+      
+            for (String key : patientRecords.patientList.keySet()) {
+                String name = patientRecords.searchPatient(key).getFirstName() + " " + patientRecords.searchPatient(key).getLastName();
+                if (name.toLowerCase().contains(searchText)) {
+                    patientListNV.getItems().add(name);
+                }
+            }
+        });
 
         // Tabs for patients - center
         patientDetailsTabsNV = new TabPane();
