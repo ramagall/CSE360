@@ -57,15 +57,23 @@ public class PatientView extends BorderPane {
 	    ListView<String> inboxPV = new ListView<>();
 	    inboxPV.getItems().addAll("Message 1", "Message 2", "Message 3");
 	    inboxTabPV.setContent(inboxPV);
+	    
+	    Tab sentMessagesPV = new Tab("Sent");
+	    sentMessagesPV.setClosable(false);
+	    ListView<String> outboxPV = new ListView<>();
+	    outboxPV.getItems().addAll("Sent 1", "Sent 2", "Sent 3");
+	    sentMessagesPV.setContent(outboxPV);
 
 	    //Send a Message
 	    Tab sendMessageTabPV = new Tab("Send a Message");
 	    sendMessageTabPV.setClosable(false);
 
-	    emailTabPanePV.getTabs().addAll(inboxTabPV, sendMessageTabPV);
+	    emailTabPanePV.getTabs().addAll(inboxTabPV, sentMessagesPV, sendMessageTabPV);
 
-	    TextField typeMessagePV = new TextField();
+	    TextArea typeMessagePV = new TextArea();
 	    typeMessagePV.setPromptText("Type your message here:");
+	    typeMessagePV.setPrefRowCount(5);
+	    typeMessagePV.setPrefColumnCount(1);
 	    Label sendAMessageToLabelPV = new Label( "Send a message to: ");
 	    RadioButton doctorButtonPV = new RadioButton("Doctor");
 	    RadioButton nurseButtonPV = new RadioButton("Nurse");
@@ -126,6 +134,18 @@ public class PatientView extends BorderPane {
 	    visitListPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
             	viewVisitDetails(username, newValue, patientRecords);
+            }
+        });
+	    
+	    outboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	System.out.println("BOZO");
+            }
+        });
+	    
+	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	System.out.println("BOZO");
             }
         });
 	}
@@ -191,4 +211,5 @@ public class PatientView extends BorderPane {
 	     patientHistoryTabPV.setContent(comb);
 	     super.setCenter(patientDetailsTabsPV);
 	}
+	
 }
