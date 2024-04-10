@@ -348,6 +348,7 @@ public class NurseView extends BorderPane {
     		header.append(info[i]);
     	}
     	String theHeader = header.toString();
+    	theHeader = theHeader.substring(0, theHeader.length() - 1);
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
