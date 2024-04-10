@@ -222,14 +222,8 @@ public class PatientView extends BorderPane {
 	    	headerPV.setEditable(true);
 	    	typeMessagePV.clear();
 	    	urgentPV.setSelected(false);
-	    	notifLabel.setText("Email draft cancelled.");
 	    	
-	    	// ** BUG **
-	    	// emailTabPanePV.getSelectionModel().clearSelection();
-	    	// this code deselects email so it can be selected again
-	    	/* not sure where to put that line so that you are able
-	    	 * to Email1 -> ViewEmail -> Reply -> Cancel -> EmailList -> Email1
-	    	*/
+	    	sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
 	    });
 	}
 	
@@ -308,7 +302,7 @@ public class PatientView extends BorderPane {
     		
     		usernameSendToPVField.setText(passEmail.sender);
     		usernameSendToPVField.setEditable(false);
-    		String head = "Re " + passEmail.head;
+    		String head = "Re: " + passEmail.head;
     		headerPV.setText(head);
     		headerPV.setEditable(false);
     		
