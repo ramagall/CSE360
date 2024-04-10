@@ -30,7 +30,6 @@ public class DoctorView extends BorderPane{
 	    private TabPane patientDetailsTabsDV;
 	    private ListView<String> inboxDV;
 	    
-	    
 	    int day;
 	    int month;
 	    int year;
