@@ -31,6 +31,8 @@ public class EmailRecords {
 			}
 			inboxList.put(User, messages);
 		}
+		
+		outboxList = new HashMap<String, ArrayList<Email>>();
 		File dir2 = new File(OUTBOXPATH);
 		for(File file : dir2.listFiles()) {
 			AttemptedLoad load2 = FileHandler.loadFile(file.getPath());
