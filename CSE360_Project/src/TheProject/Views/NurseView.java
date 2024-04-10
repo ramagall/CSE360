@@ -273,7 +273,6 @@ public class NurseView extends BorderPane {
     	ArrayList<Email> log = emailRecords.inboxList.get(username);
     	for (int i = 0; i < log.size(); i++) {
     		theEmail = log.get(i);
-    		System.out.println(theEmail.getEmail());
     		if (theEmail.head.equals(theHeader)) {
     			break;
     		}
