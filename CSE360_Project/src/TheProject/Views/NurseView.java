@@ -189,14 +189,14 @@ public class NurseView extends BorderPane {
      // Switch to Outbox
 	    outboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	viewOutboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords);
+            	viewOutboxEmailDetails(username, newValue, sceneViewer, nurseRecords, patientRecords, emailRecords);
             }
         });
 	    
 	    // Switch to Inbox
 	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	viewInboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords,
+            	viewInboxEmailDetails(username, newValue, sceneViewer, nurseRecords, patientRecords, emailRecords,
             			emailTabPaneNV, sendMessageTabPV, usernameSendToPVField, headerPV);
             }
         });
@@ -258,7 +258,7 @@ public class NurseView extends BorderPane {
 	    });
     }
 
-    public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords,
+    public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, NurseRecords nurseRecords, PatientRecords patientRecords, EmailRecords emailRecords,
 			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
 		
 		// Find Email: Derive Header
@@ -323,7 +323,7 @@ public class NurseView extends BorderPane {
     	super.setRight(emailDetails);
     	
     	exitButton.setOnAction(e -> {
-    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
     		// Fixed the BUG
     	});
     	
@@ -341,7 +341,7 @@ public class NurseView extends BorderPane {
     	});
 	}
 	
-    public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
+    public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, NurseRecords nurseRecords, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
     	String[] info = newValue.split(" ");
@@ -400,7 +400,7 @@ public class NurseView extends BorderPane {
     	super.setRight(emailDetails);
     	
     	exitButton.setOnAction(e -> {
-    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
     		// Fixed the BUG
     	});
 	}
