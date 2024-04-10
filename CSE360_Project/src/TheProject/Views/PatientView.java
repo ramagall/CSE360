@@ -236,9 +236,10 @@ public class PatientView extends BorderPane {
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
+    	theHeader = theHeader.substring(0, theHeader.length() - 1);
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
@@ -318,9 +319,10 @@ public class PatientView extends BorderPane {
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
+    	theHeader = theHeader.substring(0, theHeader.length() - 1);
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
@@ -337,7 +339,7 @@ public class PatientView extends BorderPane {
     	Label fromUser = new Label("To: ");
     	TextField fromUserField = new TextField();
     	fromUserField.setEditable(false);
-    	fromUserField.setText(theEmail.sender);
+    	fromUserField.setText(theEmail.intendedPerson);
     	
     	HBox fromUserUI = new HBox(10);
     	fromUserUI.setPadding(new Insets(20));
@@ -363,7 +365,7 @@ public class PatientView extends BorderPane {
     	
     	// Email Details Screen
     	TabPane emailDetails = new TabPane();
-    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	Tab viewEmail = new Tab("Email to " + theEmail.intendedPerson);
     	viewEmail.setClosable(false);
     	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
     	
