@@ -169,28 +169,6 @@ public class NurseView extends BorderPane {
 	    sendMessagePV.getChildren().addAll(emailTabPaneNV, user_sendToPV, headerPV, typeMessagePV, buttonsBoxPV, notifLabel);
 
 	    sendMessageTabPV.setContent(sendMessagePV);
-        // Inbox
-        Tab inboxTabNV = new Tab("Inbox");
-        inboxTabNV.setClosable(false);
-        inboxNV = new ListView<>();
-        inboxNV.getItems().addAll("Message 1", "Message 2", "Message 3");
-        inboxTabNV.setContent(inboxNV);
-
-        //Sent
-        Tab sentMessagesNV = new Tab("Sent");
-	    sentMessagesNV.setClosable(false);
-	    ListView<String> outboxNV = new ListView<>();
-	    outboxNV.getItems().addAll("Sent 1", "Sent 2", "Sent 3");
-	    sentMessagesNV.setContent(outboxNV);
-        
-        // Send a Message
-        Tab sendMessageTabNV = new Tab("Send a Message");
-        sendMessageTabNV.setClosable(false);
-        VBox sendMessageContent = new VBox();
-        sendMessageContent.getChildren().addAll(new Label("Sending message feature under development"));
-        sendMessageTabNV.setContent(sendMessageContent);
-
-        emailTabPaneNV.getTabs().addAll(inboxTabNV, sendMessageTabNV,sentMessagesNV);
 
         super.setTop(titleBoxNV);
         super.setLeft(searchPatientBoxNV);
