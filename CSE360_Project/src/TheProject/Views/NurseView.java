@@ -166,7 +166,7 @@ public class NurseView extends BorderPane {
         	if( thePatient.getAge() < 12)
         	{
         		System.out.print(thePatient.getAge());
-        		Label ageLimit = new Label("not Old enugh");
+        		Label ageLimit = new Label("Not old enough for vitals, reason validated");
         		vitalsContent.getChildren().add(ageLimit);
         		vitalsTabNV.setContent(vitalsContent);
         		visit[1] = dateField.getText(); // date

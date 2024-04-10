@@ -114,8 +114,8 @@ public class Patient {
 		  LocalDate currentDate = LocalDate.now();
 	       
       	String[] values = dob.split("/");
-  	  int day = Integer.parseInt(values[0]);
-       int month = Integer.parseInt(values[1]);
+  	  int month = Integer.parseInt(values[0]);
+       int day = Integer.parseInt(values[1]);
       int year = Integer.parseInt(values[2]);
   		  LocalDate birthday = LocalDate.of(year, month, day);
   		  Period dateDifference = Period.between(birthday, currentDate);      	
