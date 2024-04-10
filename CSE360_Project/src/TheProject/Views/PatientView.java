@@ -124,10 +124,11 @@ public class PatientView extends BorderPane {
 	    // Check Urgent Field
 	    CheckBox urgentPV = new CheckBox("Check if Urgent");
 	    Button submitPV = new Button("Send Message");
+	    Button cancelPV = new Button("Cancel");
 
 	    HBox buttonsBoxPV = new HBox(10);
 	    buttonsBoxPV.setPadding(new Insets(20));
-	    buttonsBoxPV.getChildren().addAll(urgentPV, submitPV);
+	    buttonsBoxPV.getChildren().addAll(urgentPV, submitPV, cancelPV);
 
 	    // Notification Label
 	    Label notifLabel = new Label("");
@@ -170,7 +171,8 @@ public class PatientView extends BorderPane {
 	    // Switch to Inbox
 	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	viewInboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords);
+            	viewInboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords,
+            			emailTabPanePV, sendMessageTabPV, usernameSendToPVField, headerPV);
             }
         });
 	    
@@ -203,14 +205,36 @@ public class PatientView extends BorderPane {
 	    	
 			// Clean textfields 
 	    	usernameSendToPVField.clear();
+	    	usernameSendToPVField.setEditable(true);
 	    	headerPV.clear();
+	    	headerPV.setEditable(true);
 	    	typeMessagePV.clear();
 	    	urgentPV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
 	    });
+	    
+	    cancelPV.setOnAction(e -> {
+	    	
+	    	// Clean textfields 
+	    	usernameSendToPVField.clear();
+	    	usernameSendToPVField.setEditable(true);
+	    	headerPV.clear();
+	    	headerPV.setEditable(true);
+	    	typeMessagePV.clear();
+	    	urgentPV.setSelected(false);
+	    	notifLabel.setText("Email draft cancelled.");
+	    	
+	    	// ** BUG **
+	    	// emailTabPanePV.getSelectionModel().clearSelection();
+	    	// this code deselects email so it can be selected again
+	    	/* not sure where to put that line so that you are able
+	    	 * to Email1 -> ViewEmail -> Reply -> Cancel -> EmailList -> Email1
+	    	*/
+	    });
 	}
 	
-	public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
+	public void viewInboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords,
+			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
 		
 		// Find Email: Derive Header
     	String[] info = newValue.split(" ");
@@ -267,6 +291,9 @@ public class PatientView extends BorderPane {
     	viewEmail.setClosable(false);
     	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
     	
+    	// Pass email to reply action
+    	final Email passEmail = theEmail;
+    	
     	emailDetails.getTabs().add(viewEmail);
     	super.setRight(emailDetails);
     	
@@ -277,7 +304,15 @@ public class PatientView extends BorderPane {
     	
     	replyButton.setOnAction(e -> {
     		
-    		// call reply to email for UI and file yada yada
+    		emailTabPanePV.getSelectionModel().select(sendMessageTabPV);
+    		
+    		usernameSendToPVField.setText(passEmail.sender);
+    		usernameSendToPVField.setEditable(false);
+    		String head = "Re " + passEmail.head;
+    		headerPV.setText(head);
+    		headerPV.setEditable(false);
+    		
+    		super.setRight(emailTabPanePV);
     	});
 	}
 	
@@ -347,7 +382,7 @@ public void viewOutboxEmailDetails(String username, String newValue, SceneViewer
 	
 	public void replyToEmail(String username, String recipient, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
-		//
+		
 	}
 	
 	public void viewVisitDetails(String user, String theDate, PatientRecords patientRecords){
