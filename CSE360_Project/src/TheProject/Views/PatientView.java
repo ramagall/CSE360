@@ -163,7 +163,7 @@ public class PatientView extends BorderPane {
 	    // Switch to Outbox
 	    outboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	System.out.println("BOZO");
+            	viewOutboxEmailDetails(username, newValue, sceneViewer, patientRecords, emailRecords);
             }
         });
 	    
@@ -278,6 +278,70 @@ public class PatientView extends BorderPane {
     	replyButton.setOnAction(e -> {
     		
     		// call reply to email for UI and file yada yada
+    	});
+	}
+	
+public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
+		
+		// Find Email: Derive Header
+    	String[] info = newValue.split(" ");
+    	StringBuilder header = new StringBuilder();
+    	for (int i = 0; i < info.length - 1; i++) {
+    		header.append(info[i]);
+    	}
+    	String theHeader = header.toString();
+    	Email theEmail = new Email();
+    	
+    	// Find Email: Search Records
+    	ArrayList<Email> log = emailRecords.outboxList.get(username);
+    	for (int i = 0; i < log.size(); i++) {
+    		
+    		theEmail = log.get(i);
+    		if (theEmail.head.equals(theHeader)) {
+    			break;
+    		}
+    	}
+    	
+    	// From user UI
+    	Label fromUser = new Label("To: ");
+    	TextField fromUserField = new TextField();
+    	fromUserField.setEditable(false);
+    	fromUserField.setText(theEmail.sender);
+    	
+    	HBox fromUserUI = new HBox(10);
+    	fromUserUI.setPadding(new Insets(20));
+    	fromUserUI.getChildren().addAll(fromUser, fromUserField);
+    	
+    	// Email Header
+    	TextField emailHeader = new TextField();
+    	emailHeader.setEditable(false);
+    	emailHeader.setText(theEmail.head);
+    	
+    	// Email Body
+    	TextArea emailBody = new TextArea();
+    	emailBody.setEditable(false);
+    	emailBody.setText(theEmail.body.replace('_', '\n'));
+    	
+    	// Action Buttons
+    	Button exitButton = new Button();
+    	exitButton.setText("Exit Email");
+    	
+    	HBox actionButtons = new HBox(10);
+    	actionButtons.setPadding(new Insets(20));
+    	actionButtons.getChildren().addAll(exitButton);
+    	
+    	// Email Details Screen
+    	TabPane emailDetails = new TabPane();
+    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	viewEmail.setClosable(false);
+    	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
+    	
+    	emailDetails.getTabs().add(viewEmail);
+    	super.setRight(emailDetails);
+    	
+    	exitButton.setOnAction(e -> {
+    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));
+    		// Fixed the BUG
     	});
 	}
 	
