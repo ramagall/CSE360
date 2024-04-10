@@ -211,7 +211,7 @@ public class NurseView extends BorderPane {
 	    	String isUrgent = urgentPV.isSelected() ? "True" : "False";
 	    	
 	    	// Make email line
-	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
+	    	String insertedEmail = recipient + "~" + username + "~" + isUrgent + "~" + header + "~" + body;
 	    	
 	    	// Write to Email Records
 	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
@@ -224,9 +224,9 @@ public class NurseView extends BorderPane {
 	    	
 	    	// Write to Inbox and Outbox
 	    	File infile = FileHandler.getFile(recipient + "_inbox", "Emails/Inbox");
-			FileHandler.writeToFile(infile, insertedEmail);
+			FileHandler.FileReplace(infile.getPath(), insertedEmail);
 			File outFile = FileHandler.getFile(username + "_outbox", "Emails/Outbox");
-			FileHandler.writeToFile(outFile, insertedEmail);
+			FileHandler.FileReplace(outFile.getPath(), insertedEmail);
 	    	
 			// Clean textfields 
 	    	usernameSendToPVField.clear();
@@ -236,6 +236,8 @@ public class NurseView extends BorderPane {
 	    	typeMessagePV.clear();
 	    	urgentPV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
+	    	
+	    	sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
 	    });
 	    
 	    cancelPV.setOnAction(e -> {
@@ -249,12 +251,7 @@ public class NurseView extends BorderPane {
 	    	urgentPV.setSelected(false);
 	    	notifLabel.setText("Email draft cancelled.");
 	    	
-	    	// ** BUG **
-	    	// emailTabPanePV.getSelectionModel().clearSelection();
-	    	// this code deselects email so it can be selected again
-	    	/* not sure where to put that line so that you are able
-	    	 * to Email1 -> ViewEmail -> Reply -> Cancel -> EmailList -> Email1
-	    	*/
+	    	sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
 	    });
     }
 
@@ -265,16 +262,18 @@ public class NurseView extends BorderPane {
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		header.append(info[i] + " ");
     	}
+    	
     	String theHeader = header.toString();
+    	theHeader = theHeader.substring(0, theHeader.length() - 1);
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
     	ArrayList<Email> log = emailRecords.inboxList.get(username);
     	for (int i = 0; i < log.size(); i++) {
-    		
     		theEmail = log.get(i);
+    		System.out.println(theEmail.getEmail());
     		if (theEmail.head.equals(theHeader)) {
     			break;
     		}
@@ -366,7 +365,7 @@ public class NurseView extends BorderPane {
     	Label fromUser = new Label("To: ");
     	TextField fromUserField = new TextField();
     	fromUserField.setEditable(false);
-    	fromUserField.setText(theEmail.sender);
+    	fromUserField.setText(theEmail.intendedPerson);
     	
     	HBox fromUserUI = new HBox(10);
     	fromUserUI.setPadding(new Insets(20));
@@ -392,7 +391,7 @@ public class NurseView extends BorderPane {
     	
     	// Email Details Screen
     	TabPane emailDetails = new TabPane();
-    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	Tab viewEmail = new Tab("Email to " + theEmail.intendedPerson);
     	viewEmail.setClosable(false);
     	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
     	
