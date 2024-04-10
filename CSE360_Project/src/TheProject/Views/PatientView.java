@@ -154,7 +154,7 @@ public class PatientView extends BorderPane {
 
 	    summaryOfVisit.setContent(new VBox(date, reasonFV, Notes));
 	    
-	    Label insurance = new Label("Insurance: Generic");
+	    Label insurance = new Label("Insurance: " + currentUser.getInsuranceType());
 
 	    insuranceTabPV.setContent(new VBox(insurance));
 

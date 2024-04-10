@@ -10,6 +10,7 @@ public class Patient {
 	  private String username;
 	  private String password;
 	  private String dob;
+	  private String insuranceType;
 	  public Map <String, String[]> visits;
 	  
 	  public Patient(String username, String password) {
@@ -18,14 +19,16 @@ public class Patient {
 		  visits = new HashMap<String, String[]>();
 	  }
 	  
-	  public Patient(String firstName, String lastName, String username, String password, String dob){
+	  public Patient(String firstName, String lastName, String username, String password, String dob, String insuranceType){
 		  this.firstName = firstName;
 		  this.lastName = lastName;
 		  this.username = username;
 		  this.password = password;
 		  this.dob = dob;
+		  this.insuranceType = insuranceType;
 		  visits = new HashMap<String, String[]>();
 	  }
+	  
 	  
 	  public Patient(String [] data) {
 		 firstName = data[0];
@@ -33,6 +36,7 @@ public class Patient {
 		 username = data[2];
 		 password = data[3];
 		 dob = data[4];
+		 insuranceType = data[5];
 		 visits = new HashMap<String, String[]>();
 	  }
 	  
@@ -60,7 +64,7 @@ public class Patient {
 	  /* Methods */
 	  
 	  public String getPatientInfo() {
-		  return firstName + "~" + lastName + "~" + username + "~" + password + "~" + dob;
+		  return firstName + "~" + lastName + "~" + username + "~" + password + "~" + dob + "~" + insuranceType;
 	  }
 	  public void setFirstName(String update) {
 	    firstName = update;
@@ -100,5 +104,13 @@ public class Patient {
 
 	  public String getDOB() {
 	    return dob;
+	  }
+	  
+	  public void setInsuranceType(String insuranceType) {
+		  this.insuranceType = insuranceType;
+	  }
+	  
+	  public String getInsuranceType() {
+		  return insuranceType;
 	  }
 	}

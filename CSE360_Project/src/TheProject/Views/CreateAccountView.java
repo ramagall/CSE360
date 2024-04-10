@@ -23,6 +23,8 @@ public class CreateAccountView extends VBox {
     firstName.setPromptText("First Name");
     TextField lastName = new TextField();
     lastName.setPromptText("Last Name");
+    TextField insurance = new TextField ();
+    insurance.setPromptText("Enter insurance type");
     
     Label dobTitle = new Label("Enter Date of Birth:");
     TextField month = new TextField();
@@ -65,6 +67,7 @@ public class CreateAccountView extends VBox {
         	newPatient.setFirstName(firstName.getText());
         	newPatient.setlastName(lastName.getText());
         	newPatient.setDOB(patient_dob);
+        	newPatient.setInsuranceType(insurance.getText());
         	
         	patientRecords.createNewPatient(newPatient);
         	
@@ -73,7 +76,7 @@ public class CreateAccountView extends VBox {
       });
     
     super.setPadding(new Insets(20));
-    super.getChildren().addAll(addAccountWelcome, firstName, lastName, dobTitle, dateOfBirth, caisEnterButton, CAIS_ERROR);
+    super.getChildren().addAll(addAccountWelcome, firstName, lastName, insurance, dobTitle, dateOfBirth, caisEnterButton, CAIS_ERROR);
 	}
     
 }

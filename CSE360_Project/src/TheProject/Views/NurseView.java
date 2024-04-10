@@ -113,9 +113,9 @@ public class NurseView extends BorderPane {
     		visit[i] = "N/A";
     	}
     	
-    	for(int i = 0; i < visit.length; i++) {
+    	/*for(int i = 0; i < visit.length; i++) {
     		System.out.println(visit[i]);
-    	}
+    	}*/
         patientDetailsTabsNV.getTabs().clear();
         	
         // Vitals Tab
@@ -146,7 +146,7 @@ public class NurseView extends BorderPane {
         Button inputInfoButton = new Button("Input Info");
 
         // VBox to hold all components
-        VBox vitalsContent = new VBox(50, nameLabel, dateField, weightField, temperatureField, heightField, bloodPressureField, inputInfoButton);
+        VBox vitalsContent = new VBox(50, nameLabel, dateField, weightField, temperatureField, heightField, bloodPressureField, reasonField, inputInfoButton);
         vitalsContent.setPadding(new Insets(10));
         vitalsContent.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         vitalsTabNV.setContent(vitalsContent);
@@ -165,6 +165,7 @@ public class NurseView extends BorderPane {
     			visit[2] = "Too Young"; // temp
     			visit[3] = "Too Young"; // height 
     			visit[4] =	"Too Young"; // B.P.
+    			visit[10] = reasonField.getText();
         	}
         	
         	else

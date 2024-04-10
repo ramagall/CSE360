@@ -16,12 +16,15 @@ public class SceneViewer extends Scene {
 	
 	public DoctorRecords doctorRecords;
 	
+	public EmailRecords emailRecords;
+	
 	public SceneViewer(double height, double width) {
 		super(new VBox(), height, width);
 		// We will also initialize a new patientRecords, doctorRecords, and nurseRecords here
 		patientRecords = new PatientRecords();
 		nurseRecords = new NurseRecords();
 		doctorRecords = new DoctorRecords();
+		emailRecords = new EmailRecords();
 	}
 	//
 	public SceneViewer(VBox vbox, double height, double weight) {
