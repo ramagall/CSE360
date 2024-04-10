@@ -380,11 +380,6 @@ public void viewOutboxEmailDetails(String username, String newValue, SceneViewer
     	});
 	}
 	
-	public void replyToEmail(String username, String recipient, PatientRecords patientRecords, EmailRecords emailRecords) {
-		
-		
-	}
-	
 	public void viewVisitDetails(String user, String theDate, PatientRecords patientRecords){
 		Patient currentUser = patientRecords.searchPatient(user);
 		String[] currentVisit = currentUser.getVisit(theDate);
