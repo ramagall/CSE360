@@ -17,6 +17,12 @@ Contributers:
 &emsp;- Victor De La Torre  
   
 Special Notes:  
+&emsp;- Nurse username : AdminNurse
+&emsp;- Nurse password : cse360
+&emsp;- Doctor username : AdminDoctor
+&emsp;- Doctor password : cse360
+&emsp;- Patient username : AdminPatient   or  created username 
+&emsp;- Patient password : cse360         or  created password
 &emsp;- Nurse/Doctor Accounts and Records need to be hard-coded.  
 &emsp;- Assumed Scenario: Office assigns employee accounts.  
   
