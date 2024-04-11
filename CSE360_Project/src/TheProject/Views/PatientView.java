@@ -233,9 +233,12 @@ public class PatientView extends BorderPane {
 			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
     		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
@@ -316,9 +319,12 @@ public class PatientView extends BorderPane {
 	public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
     		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
