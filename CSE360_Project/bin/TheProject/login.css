@@ -1,0 +1,75 @@
+.scene {
+    -fx-background-color: #f4f4f4;
+}
+
+.grid-pane, .vbox, .hbox {
+    -fx-padding: 20px;
+    -fx-vgap: 10px;
+    -fx-hgap: 10px;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d2d2d2;
+    -fx-border-width: 1px;
+}
+
+.label {
+    -fx-text-fill: #333333; 
+    -fx-font-size: 16px; 
+}
+
+.text-field, .password-field {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #d2d2d2;
+    -fx-border-width: 1px;
+    -fx-text-fill: #333333;
+}
+
+.radio-button {
+    -fx-text-fill: #333333;
+    -fx-mark-color: #4CAF50;
+}
+
+.choice-box, .text-area, .spinner {
+    -fx-background-color: #f0f0f0;
+    -fx-border-color: #d2d2d2;
+    -fx-border-width: 1px;
+    -fx-text-fill: #333333;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);
+}
+
+.button:hover {
+    -fx-background-color: #45A049;
+}
+
+.tab-pane {
+    -fx-background-color: #f0f0f0; 
+    -fx-padding: 10px;
+}
+
+.tab {
+    -fx-background-color: #e0e0e0; 
+    -fx-text-fill: #333333;
+    -fx-padding: 10px;
+}
+
+.tab:selected {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #4CAF50;
+    -fx-border-width: 2px;
+    -fx-padding: 10px;
+}
+
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+}
+
+.hbox {
+    -fx-alignment: center-left;
+    -fx-spacing: 10px;
+}
