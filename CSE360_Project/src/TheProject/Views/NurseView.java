@@ -89,9 +89,9 @@ public class NurseView extends BorderPane {
         TabPane emailTabPaneNV = new TabPane();
         
         //Inbox
-	    Tab inboxTabPV = new Tab("Inbox");
-	    inboxTabPV.setClosable(false);
-	    ListView<String> inboxPV = new ListView<>();
+	    Tab inboxTabNV = new Tab("Inbox");
+	    inboxTabNV.setClosable(false);
+	    ListView<String> inboxNV = new ListView<>();
 	    
 	    // Populate Inbox with Email Headers
 	    ArrayList<Email> inbox = emailRecords.inboxList.get(username);
@@ -101,17 +101,17 @@ public class NurseView extends BorderPane {
 		    	Email currEmail = inbox.get(i);
 		    	String urgent = currEmail.urgency.equals("True") ? " (Urgent)" : " (Not Urgent)";
 		    	String header = currEmail.head + urgent;
-		    	inboxPV.getItems().add(header);
+		    	inboxNV.getItems().add(header);
 		    }
 	    } catch (NullPointerException e) {
 	    	// do nothing (empty inbox)
 	    }
-	    inboxTabPV.setContent(inboxPV);
+	    inboxTabNV.setContent(inboxNV);
 	    
 	    // Outbox
-	    Tab sentMessagesPV = new Tab("Sent");
-	    sentMessagesPV.setClosable(false);
-	    ListView<String> outboxPV = new ListView<>();
+	    Tab sentMessagesNV = new Tab("Sent");
+	    sentMessagesNV.setClosable(false);
+	    ListView<String> outboxNV = new ListView<>();
 	    
 	    // Populate Outbox with Email Headers
 	    ArrayList<Email> outbox = emailRecords.outboxList.get(username);
@@ -121,45 +121,45 @@ public class NurseView extends BorderPane {
 		    	Email currEmail = outbox.get(i);
 		    	String recipient = currEmail.intendedPerson;
 		    	String header = "To: " + recipient + " - " + currEmail.head;
-		    	outboxPV.getItems().add(header);
+		    	outboxNV.getItems().add(header);
 		    }
 	    } catch (NullPointerException e) {
 	    	// do nothing (outbox empty)
 	    }
-	    sentMessagesPV.setContent(outboxPV);
+	    sentMessagesNV.setContent(outboxNV);
 
 	    //Send a Message
-	    Tab sendMessageTabPV = new Tab("Send a Message");
-	    sendMessageTabPV.setClosable(false);
+	    Tab sendMessageTabNV = new Tab("Send a Message");
+	    sendMessageTabNV.setClosable(false);
 
-	    emailTabPaneNV.getTabs().addAll(inboxTabPV, sentMessagesPV, sendMessageTabPV);
+	    emailTabPaneNV.getTabs().addAll(inboxTabNV, sentMessagesNV, sendMessageTabNV);
 
-	    Label usernameSendToPV = new Label("Send To:");
-	    TextField usernameSendToPVField = new TextField();
+	    Label usernameSendToNV = new Label("Send To:");
+	    TextField usernameSendToNVField = new TextField();
 
 	    // Send To Field
-	    HBox user_sendToPV = new HBox(10);
-	    user_sendToPV.setPadding(new Insets(20));
-	    user_sendToPV.getChildren().addAll(usernameSendToPV, usernameSendToPVField);
+	    HBox user_sendToNV = new HBox(10);
+	    user_sendToNV.setPadding(new Insets(20));
+	    user_sendToNV.getChildren().addAll(usernameSendToNV, usernameSendToNVField);
 
 	    // Header Field
-	    TextField headerPV = new TextField();
-	    headerPV.setPromptText("Header...");
+	    TextField headerNV = new TextField();
+	    headerNV.setPromptText("Header...");
 	    
 	    // Message Body Field
-	    TextArea typeMessagePV = new TextArea();
-	    typeMessagePV.setPromptText("Type your message here...");
-	    typeMessagePV.setPrefRowCount(5);
-	    typeMessagePV.setPrefColumnCount(1);
+	    TextArea typeMessageNV = new TextArea();
+	    typeMessageNV.setPromptText("Type your message here...");
+	    typeMessageNV.setPrefRowCount(5);
+	    typeMessageNV.setPrefColumnCount(1);
 	    
 	    // Check Urgent Field
-	    CheckBox urgentPV = new CheckBox("Check if Urgent");
-	    Button submitPV = new Button("Send Message");
-	    Button cancelPV = new Button("Cancel");
+	    CheckBox urgentNV = new CheckBox("Check if Urgent");
+	    Button submitNV = new Button("Send Message");
+	    Button cancelNV = new Button("Cancel");
 
-	    HBox buttonsBoxPV = new HBox(10);
-	    buttonsBoxPV.setPadding(new Insets(20));
-	    buttonsBoxPV.getChildren().addAll(urgentPV, submitPV, cancelPV);
+	    HBox buttonsBoxNV = new HBox(10);
+	    buttonsBoxNV.setPadding(new Insets(20));
+	    buttonsBoxNV.getChildren().addAll(urgentNV, submitNV, cancelNV);
 
 	    // Notification Label
 	    Label notifLabel = new Label("");
@@ -167,9 +167,9 @@ public class NurseView extends BorderPane {
 	    // Complete Send Message
 	    VBox sendMessagePV = new VBox(10);
 	    sendMessagePV.setPadding(new Insets(20));
-	    sendMessagePV.getChildren().addAll(emailTabPaneNV, user_sendToPV, headerPV, typeMessagePV, buttonsBoxPV, notifLabel);
+	    sendMessagePV.getChildren().addAll(emailTabPaneNV, user_sendToNV, headerNV, typeMessageNV, buttonsBoxNV, notifLabel);
 
-	    sendMessageTabPV.setContent(sendMessagePV);
+	    sendMessageTabNV.setContent(sendMessagePV);
 
         super.setTop(titleBoxNV);
         super.setLeft(searchPatientBoxNV);
@@ -188,28 +188,28 @@ public class NurseView extends BorderPane {
         });
         
      // Switch to Outbox
-	    outboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+	    outboxNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
             	viewOutboxEmailDetails(username, newValue, sceneViewer, nurseRecords, patientRecords, emailRecords);
             }
         });
 	    
 	    // Switch to Inbox
-	    inboxPV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+	    inboxNV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
             	viewInboxEmailDetails(username, newValue, sceneViewer, nurseRecords, patientRecords, emailRecords,
-            			emailTabPaneNV, sendMessageTabPV, usernameSendToPVField, headerPV);
+            			emailTabPaneNV, sendMessageTabNV, usernameSendToNVField, headerNV);
             }
         });
 	    
 	    // Send Email Button
-	    submitPV.setOnAction(e -> {
+	    submitNV.setOnAction(e -> {
 	    	
 	    	// Gather info from textfields
-	    	String recipient = usernameSendToPVField.getText();
-	    	String header = headerPV.getText();
-	    	String body = typeMessagePV.getText().replace('\n', '_');
-	    	String isUrgent = urgentPV.isSelected() ? "True" : "False";
+	    	String recipient = usernameSendToNVField.getText();
+	    	String header = headerNV.getText();
+	    	String body = typeMessageNV.getText().replace('\n', '_');
+	    	String isUrgent = urgentNV.isSelected() ? "True" : "False";
 	    	
 	    	// Make email line
 	    	String insertedEmail = recipient + "~" + username + "~" + isUrgent + "~" + header + "~" + body;
@@ -230,26 +230,26 @@ public class NurseView extends BorderPane {
 			FileHandler.FileReplace(outFile.getPath(), insertedEmail);
 	    	
 			// Clean textfields 
-	    	usernameSendToPVField.clear();
-	    	usernameSendToPVField.setEditable(true);
-	    	headerPV.clear();
-	    	headerPV.setEditable(true);
-	    	typeMessagePV.clear();
-	    	urgentPV.setSelected(false);
+	    	usernameSendToNVField.clear();
+	    	usernameSendToNVField.setEditable(true);
+	    	headerNV.clear();
+	    	headerNV.setEditable(true);
+	    	typeMessageNV.clear();
+	    	urgentNV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
 	    	
 	    	sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
 	    });
 	    
-	    cancelPV.setOnAction(e -> {
+	    cancelNV.setOnAction(e -> {
 	    	
 	    	// Clean textfields 
-	    	usernameSendToPVField.clear();
-	    	usernameSendToPVField.setEditable(true);
-	    	headerPV.clear();
-	    	headerPV.setEditable(true);
-	    	typeMessagePV.clear();
-	    	urgentPV.setSelected(false);
+	    	usernameSendToNVField.clear();
+	    	usernameSendToNVField.setEditable(true);
+	    	headerNV.clear();
+	    	headerNV.setEditable(true);
+	    	typeMessageNV.clear();
+	    	urgentNV.setSelected(false);
 	    	notifLabel.setText("Email draft cancelled.");
 	    	
 	    	sceneViewer.changeView(new NurseView(sceneViewer, emailRecords, nurseRecords, patientRecords, username));
@@ -508,20 +508,23 @@ public class NurseView extends BorderPane {
    	
         });
         
-        patientHistoryListNV = new ListView<>();
-        
-        	for(String key1: thePatient.getAllVisits().keySet() ) {
-        	String[] visits = thePatient.getVisit(key1);
-        
-        	{
-        	patientHistoryListNV.getItems().add(visits[1]);
-        	}
-        	}
             
+        TextField historyField = new TextField();
+        historyField.setPromptText("Input medical history");
+        TextField vaxField = new TextField();
+        vaxField.setPromptText("Input vaccine history");
+        TextField prescriptionsField = new TextField();
+        prescriptionsField.setPromptText("Input prescriptions");
+        Button inputHistoryButton = new Button("Input History");
         
+        inputHistoryButton.setOnAction(e -> {
+        	visit[7] = historyField.getText();
+        	visit[8] = vaxField.getText();
+        	visit[9] = prescriptionsField.getText();
+        });
         
-        
-        patientHistoryTabNV.setContent(patientHistoryListNV);
+        VBox patientHistoryContent = new VBox(historyField, vaxField, prescriptionsField, inputHistoryButton);
+        patientHistoryTabNV.setContent(patientHistoryContent);
         patientHistoryTabNV.setClosable(false);
         patientDetailsTabsNV.getTabs().add(patientHistoryTabNV);
         /*
