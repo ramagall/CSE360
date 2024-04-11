@@ -30,6 +30,7 @@ public class NurseView extends BorderPane {
     private TextField searchedPatientFieldNV;
     private TabPane patientDetailsTabsNV;
     private ListView<String> inboxNV;
+    private ListView<String> patientHistoryListNV;
     
     
     int day;
@@ -453,7 +454,11 @@ public class NurseView extends BorderPane {
         vitalsTabNV.setContent(vitalsContent);
         vitalsTabNV.setClosable(false);
         
+        Tab patientHistoryTabNV = new Tab("Patient History");
+        ListView<String> patientHistoryListView = new ListView<>();
+     
         
+
         inputInfoButton.setOnAction(e -> 
         {
         	
@@ -486,10 +491,32 @@ public class NurseView extends BorderPane {
     			visit[4] = height; // height
     			visit[5] =	bloodPressure; // B.P.
     			visit[10] = reason;
+    			
+    	
+    	        
+    
+    	        
 		  
         	}
    	
         });
+        
+        patientHistoryListNV = new ListView<>();
+        
+        	for(String key1: thePatient.getAllVisits().keySet() ) {
+        	String[] visits = thePatient.getVisit(key1);
+        
+        	{
+        	patientHistoryListNV.getItems().add(visits[1]);
+        	}
+        	}
+            
+        
+        
+        
+        patientHistoryTabNV.setContent(patientHistoryListNV);
+        patientHistoryTabNV.setClosable(false);
+        patientDetailsTabsNV.getTabs().add(patientHistoryTabNV);
         /*
         
         this is where Input Info will save into the patient file 
@@ -529,12 +556,6 @@ public class NurseView extends BorderPane {
         });
 
         // Placeholder for patient history information
-        Tab patientHistoryTabNV = new Tab("Patient History");
-        ListView<String> patientHistoryListView = new ListView<>();
-        patientHistoryListView.getItems().addAll("Patient history data for " + selectedPatient);
-        patientHistoryTabNV.setContent(patientHistoryListView);
-        patientHistoryTabNV.setClosable(false);
-        patientDetailsTabsNV.getTabs().add(patientHistoryTabNV);
-        
+
     }
 }

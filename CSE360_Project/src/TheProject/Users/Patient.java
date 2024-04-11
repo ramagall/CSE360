@@ -64,6 +64,10 @@ public class Patient {
 	  }
 	  
 	  /* Methods */
+	  public Map <String, String[]> getAllVisits()
+	  {
+		  return visits;
+	  }
 	  
 	  public String getPatientInfo() {
 		  return firstName + "~" + lastName + "~" + username + "~" + password + "~" + dob + "~" + insuranceType;
