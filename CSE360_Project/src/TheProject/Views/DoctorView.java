@@ -5,6 +5,7 @@ import TheProject.Users.Patient;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import TheProject.SceneViewer;
 import TheProject.FileHandling.FileHandler;
@@ -23,18 +24,19 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+//hi
 public class DoctorView extends BorderPane{
 	 private ListView<String> patientListDV;
 	    private TextField searchedPatientFieldDV;
 	    private TabPane patientDetailsTabsDV;
 	    private ListView<String> inboxDV;
-	    
+	    private ListView<String> patientHistoryListDV;
+	    //hi
 	    int day;
 	    int month;
 	    int year;
 	    String user;
-	public DoctorView(SceneViewer sceneViewer, EmailRecords emailRecords, DoctorRecords doctorRecords, PatientRecords patientRecords, String username) {
+	public DoctorView(SceneViewer sceneViewer, EmailRecords emailRecords, DoctorRecords doctorRecords, PatientRecords patientRecords, String username ) {
 		super();
 		
 		Label welcomeDV = new Label("Doctor View.");
@@ -104,6 +106,8 @@ public class DoctorView extends BorderPane{
 	    }
 	    inboxTabDV.setContent(inboxDV);
 	    
+	 
+
 	    // Outbox
 	    Tab sentMessagesDV = new Tab("Sent");
 	    sentMessagesDV.setClosable(false);
@@ -123,7 +127,8 @@ public class DoctorView extends BorderPane{
 	    	// do nothing (outbox empty)
 	    }
 	    sentMessagesDV.setContent(outboxDV);
-
+	    
+	
 	    //Send a Message
 	    Tab sendMessageTabDV = new Tab("Send a Message");
 	    sendMessageTabDV.setClosable(false);
@@ -175,11 +180,12 @@ public class DoctorView extends BorderPane{
         doctorLogout.setOnAction(e -> {
             sceneViewer.setLoginView();
         });
+       
 
 	    
 	    patientListDV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-            	updatePatientDetails(newValue, patientRecords);
+            	dateWindow(newValue, patientRecords);
             }
         });
 	    
@@ -208,7 +214,7 @@ public class DoctorView extends BorderPane{
 	    	String isUrgent = urgentDV.isSelected() ? "True" : "False";
 	    	
 	    	// Make email line
-	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
+	    	String insertedEmail = recipient + "~" + username + "~" + isUrgent + "~" + header + "~" + body;
 	    	
 	    	// Write to Email Records
 	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
@@ -233,6 +239,8 @@ public class DoctorView extends BorderPane{
 	    	typeMessageDV.clear();
 	    	urgentDV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
+	    	
+	    	sceneViewer.changeView(new DoctorView(sceneViewer, emailRecords, doctorRecords, patientRecords, username));
 	    });
 	    
 	    cancelDV.setOnAction(e -> {
@@ -254,10 +262,13 @@ public class DoctorView extends BorderPane{
 			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
     	Email theEmail = new Email();
@@ -302,6 +313,8 @@ public class DoctorView extends BorderPane{
     	actionButtons.setPadding(new Insets(20));
     	actionButtons.getChildren().addAll(replyButton, exitButton);
     	
+    	
+    	
     	// Email Details Screen
     	TabPane emailDetails = new TabPane();
     	Tab viewEmail = new Tab("Email from " + theEmail.sender);
@@ -333,13 +346,17 @@ public class DoctorView extends BorderPane{
     	});
 	}
 	
+	
 	public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, DoctorRecords doctorRecords, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
     	Email theEmail = new Email();
@@ -358,7 +375,7 @@ public class DoctorView extends BorderPane{
     	Label fromUser = new Label("To: ");
     	TextField fromUserField = new TextField();
     	fromUserField.setEditable(false);
-    	fromUserField.setText(theEmail.sender);
+    	fromUserField.setText(theEmail.intendedPerson);
     	
     	HBox fromUserUI = new HBox(10);
     	fromUserUI.setPadding(new Insets(20));
@@ -384,7 +401,7 @@ public class DoctorView extends BorderPane{
     	
     	// Email Details Screen
     	TabPane emailDetails = new TabPane();
-    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	Tab viewEmail = new Tab("Email to " + theEmail.intendedPerson);
     	viewEmail.setClosable(false);
     	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
     	
@@ -397,49 +414,68 @@ public class DoctorView extends BorderPane{
     	});
 	}
 	
-	private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords) {
+	private void updatePatientDetails(String selectedPatient, PatientRecords patientRecords, String theDate) {
         // Clear previous content
     	Patient thePatient = patientRecords.searchByName(selectedPatient);
+    	System.out.print(selectedPatient);
+    	
+    	
+    	String[] visitDetails = thePatient.getVisit(theDate);
+    	if (visitDetails == null) {
+            // Handle case where visit details for the selected date are not found
+            return;
+        }
     	String[] visit = new String[11];
     	visit[0] = thePatient.getUser();
+    	
+    	/*
     	for(int i = 1; i < visit.length; i++) {
     		visit[i] = "N/A";
     	}
+    	*/
+    	for(int i = 0; i < visit.length; i++) {
+    		
+    	}
     	
-    	/*for(int i = 0; i < visit.length; i++) {
-    		System.out.println(visit[i]);
-    	}*/
         patientDetailsTabsDV.getTabs().clear();
         	
         // Vitals Tab
         Tab vitalsTabDV = new Tab("Vitals");
 
         // Patient Name Label
-        Label nameLabel = new Label(selectedPatient);
+        Label nameLabel = new Label(user);
         nameLabel.setStyle("-fx-font-weight: bold");
         nameLabel.setMaxWidth(Double.MAX_VALUE);
         nameLabel.setAlignment(javafx.geometry.Pos.CENTER);
 
         // Text Fields for Vitals
+        Label dateLabel = new Label("Date ");
         TextField dateField = new TextField();
-        dateField.setPromptText("Data");
+        dateField.setText(visitDetails[1]);
+        
+        
+        Label reasonLabel = new Label("Reason for visit: ");
         TextField reasonField = new TextField();
-        reasonField.setPromptText("Reason for visit");
+        reasonField.setText(visitDetails[10]);
+        Label weightLabel = new Label("Weight: ");
         TextField weightField = new TextField();
-        weightField.setPromptText("Weight");
+        weightField.setText(visitDetails[2]);
         TextField temperatureField = new TextField();
-        temperatureField.setPromptText("Temperature");
+        Label tempLabel = new Label("Temperature: ");
+        temperatureField.setText(visitDetails[3]);
+        Label heightLabel = new Label("Height: ");
         TextField heightField = new TextField();
-        heightField.setPromptText("Height");
+        heightField.setText(visitDetails[4]);
+        Label bpLabel = new Label("Blood Pressure: ");
         TextField bloodPressureField = new TextField();
-        bloodPressureField.setPromptText("Blood Pressure");
+        bloodPressureField.setText(visitDetails[4]);
         
        
         // Button for input info
        
 
         // VBox to hold all components
-        VBox vitalsContent = new VBox(50, nameLabel, dateField, weightField, temperatureField, heightField, bloodPressureField, reasonField);
+        VBox vitalsContent = new VBox(10, nameLabel, dateLabel, dateField, weightLabel, weightField, tempLabel, temperatureField, heightLabel, heightField, bpLabel, bloodPressureField, reasonLabel, reasonField);
         vitalsContent.setPadding(new Insets(10));
         vitalsContent.setAlignment(javafx.geometry.Pos.TOP_CENTER);
         vitalsTabDV.setContent(vitalsContent);
@@ -453,6 +489,27 @@ public class DoctorView extends BorderPane{
         
         */
         
+ 
+	    Tab patientInfoTabDV = new Tab("Patient Information");
+	    patientInfoTabDV.setClosable(false);
+
+
+	    Label nameLabel2 = new Label("Name:");
+	    Label dobLabel = new Label("Date of Birth:");
+	    TextField nameField = new TextField();
+	    nameField.setText(thePatient.getFirstName() + " " + thePatient.getLastName());
+	    TextField dobField = new TextField();
+	    dobField.setText(thePatient.getDOB());
+	    
+
+	    VBox patientInfoContent = new VBox(10, nameLabel2, nameField, dobLabel, dobField);
+	    patientInfoContent.setPadding(new Insets(10));
+	    patientInfoTabDV.setContent(patientInfoContent);
+
+	
+	    patientDetailsTabsDV.getTabs().add(patientInfoTabDV);
+
+
         
 
         patientDetailsTabsDV.getTabs().add(vitalsTabDV);
@@ -461,37 +518,67 @@ public class DoctorView extends BorderPane{
         Tab allergiesTabDV = new Tab("Allergies");
 
         // Text Field for Allergies
-        TextField allergyField = new TextField();
-        allergyField.setPromptText("Enter allergy");
+        TextArea allergyArea = new TextArea();
+        allergyArea.setText("Allergies: /n" + visitDetails[6]);
+        
 
         // Button for inputting allergy
-        Button inputAllergyButton = new Button("Input Allergy");
-        Button saveVisit = new Button("Save visit");
+        
 
         // VBox to hold Allergies components
-        VBox allergiesContent = new VBox(10, allergyField, inputAllergyButton, saveVisit);
+        VBox allergiesContent = new VBox(10, allergyArea);
         allergiesTabDV.setContent(allergiesContent);
-        allergiesTabDV.setClosable(false);
+        allergiesTabDV.setClosable(true);
 
         patientDetailsTabsDV.getTabs().add(allergiesTabDV);
         
-        inputAllergyButton.setOnAction(e -> {
-        	visit[6] = allergyField.getText();
-        });
         
-        saveVisit.setOnAction(e-> {
-        	thePatient.setVisit(visit);
-        	patientRecords.createVisit(thePatient, visit);
-        	saveVisit.setDisable(true);
-        });
-
-        // Placeholder for patient history information
         Tab patientHistoryTabDV = new Tab("Patient History");
-        ListView<String> patientHistoryListView = new ListView<>();
-        patientHistoryListView.getItems().addAll("Patient history data for " + selectedPatient);
+		ListView<String> patientHistoryListView = new ListView<>();
+        patientHistoryListView.getItems().addAll("Patient history data for " + selectedPatient+ "\n");
         patientHistoryTabDV.setContent(patientHistoryListView);
         patientHistoryTabDV.setClosable(false);
         patientDetailsTabsDV.getTabs().add(patientHistoryTabDV);
         
+        super.setCenter(patientDetailsTabsDV);
+        
+       
+        
     }
+	
+	public void dateWindow(String selectedPatient, PatientRecords patientRecords) {
+		
+		Patient thePatient = patientRecords.searchByName(selectedPatient);
+		ListView<String> visitListDV = new ListView<>();
+		
+		
+		
+	    
+	   for(String key : thePatient.visits.keySet()) {
+	    	visitListDV.getItems().add(key);
+	    	System.out.print(key);
+       	}
+	   
+	    VBox dateBox = new VBox();
+	    
+	    dateBox.getChildren().addAll(visitListDV);
+	    
+	    super.setCenter(dateBox);
+	    
+	    visitListDV.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+            	updatePatientDetails(selectedPatient, patientRecords, newValue);
+            }
+        });
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 }
