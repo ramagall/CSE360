@@ -214,7 +214,7 @@ public class DoctorView extends BorderPane{
 	    	String isUrgent = urgentDV.isSelected() ? "True" : "False";
 	    	
 	    	// Make email line
-	    	String insertedEmail = username + "~" + recipient + "~" + isUrgent + "~" + header + "~" + body;
+	    	String insertedEmail = recipient + "~" + username + "~" + isUrgent + "~" + header + "~" + body;
 	    	
 	    	// Write to Email Records
 	    	ArrayList<Email> inTemp = emailRecords.inboxList.get(recipient);
@@ -239,6 +239,8 @@ public class DoctorView extends BorderPane{
 	    	typeMessageDV.clear();
 	    	urgentDV.setSelected(false);
 	    	notifLabel.setText("Email successfully sent.");
+	    	
+	    	sceneViewer.changeView(new DoctorView(sceneViewer, emailRecords, doctorRecords, patientRecords, username));
 	    });
 	    
 	    cancelDV.setOnAction(e -> {
@@ -260,10 +262,13 @@ public class DoctorView extends BorderPane{
 			TabPane emailTabPanePV, Tab sendMessageTabPV, TextField usernameSendToPVField, TextField headerPV) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
     	Email theEmail = new Email();
@@ -345,10 +350,13 @@ public class DoctorView extends BorderPane{
 	public void viewOutboxEmailDetails(String username, String newValue, SceneViewer sceneViewer, DoctorRecords doctorRecords, PatientRecords patientRecords, EmailRecords emailRecords) {
 		
 		// Find Email: Derive Header
-    	String[] info = newValue.split(" ");
+		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
-    		header.append(info[i]);
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
     	Email theEmail = new Email();
@@ -367,7 +375,7 @@ public class DoctorView extends BorderPane{
     	Label fromUser = new Label("To: ");
     	TextField fromUserField = new TextField();
     	fromUserField.setEditable(false);
-    	fromUserField.setText(theEmail.sender);
+    	fromUserField.setText(theEmail.intendedPerson);
     	
     	HBox fromUserUI = new HBox(10);
     	fromUserUI.setPadding(new Insets(20));
@@ -393,7 +401,7 @@ public class DoctorView extends BorderPane{
     	
     	// Email Details Screen
     	TabPane emailDetails = new TabPane();
-    	Tab viewEmail = new Tab("Email to " + theEmail.sender);
+    	Tab viewEmail = new Tab("Email to " + theEmail.intendedPerson);
     	viewEmail.setClosable(false);
     	viewEmail.setContent(new VBox(fromUserUI, emailHeader, emailBody, actionButtons));
     	
