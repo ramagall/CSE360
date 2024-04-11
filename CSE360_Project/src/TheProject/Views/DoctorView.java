@@ -425,17 +425,6 @@ public class DoctorView extends BorderPane{
             // Handle case where visit details for the selected date are not found
             return;
         }
-    	String[] visit = new String[11];
-    	visit[0] = thePatient.getUser();
-    	
-    	/*
-    	for(int i = 1; i < visit.length; i++) {
-    		visit[i] = "N/A";
-    	}
-    	*/
-    	for(int i = 0; i < visit.length; i++) {
-    		
-    	}
     	
         patientDetailsTabsDV.getTabs().clear();
         	
@@ -532,11 +521,34 @@ public class DoctorView extends BorderPane{
 
         patientDetailsTabsDV.getTabs().add(allergiesTabDV);
         
+        Label historyLabel = new Label("Edit medical history");
+        TextField historyField = new TextField();
+        historyField.setText(visitDetails[7]);
+        Label vaxLabel = new Label("Edit vaccine history");
+        TextField vaxField = new TextField();
+        vaxField.setText(visitDetails[8]);
+        Label prescriptionsLabel = new Label("Edit prescriptions");
+        TextField prescriptionsField = new TextField();
+        prescriptionsField.setText(visitDetails[9]);
+        Button inputHistoryButton = new Button("Input History");
+        Button saveHistoryButton = new Button("Save History");
+        
+        inputHistoryButton.setOnAction(e -> {
+        	visitDetails[7] = historyField.getText();
+        	visitDetails[8] = vaxField.getText();
+        	visitDetails[9] = prescriptionsField.getText();
+        });
+        
+        saveHistoryButton.setOnAction(e-> {
+        	thePatient.setVisit(visitDetails);
+        	patientRecords.updateVisit(thePatient, visitDetails, theDate);
+        	saveHistoryButton.setDisable(true);
+        });
+
         
         Tab patientHistoryTabDV = new Tab("Patient History");
-		ListView<String> patientHistoryListView = new ListView<>();
-        patientHistoryListView.getItems().addAll("Patient history data for " + selectedPatient+ "\n");
-        patientHistoryTabDV.setContent(patientHistoryListView);
+        VBox patientHistoryContent = new VBox(historyLabel, historyField, vaxLabel, vaxField, prescriptionsLabel, prescriptionsField, inputHistoryButton, saveHistoryButton);
+        patientHistoryTabDV.setContent(patientHistoryContent);
         patientHistoryTabDV.setClosable(false);
         patientDetailsTabsDV.getTabs().add(patientHistoryTabDV);
         

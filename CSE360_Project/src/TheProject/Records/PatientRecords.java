@@ -73,7 +73,10 @@ public class PatientRecords {
 		FileHandler.FileReplace(file.getPath(), visitString);
 	}
 	
-	public void updateVisit() {
-		
+	public void updateVisit(Patient newPatient, String[] visit, String date) {
+		patientList.put(newPatient.getUser(), newPatient);
+		File file = FileHandler.getFile(newPatient.getUser() + "_visit", VISITPATH);
+		String visitString = String.join("~", visit);
+		FileHandler.FileReplace(file.getPath(), date, visitString);
 	}
 }

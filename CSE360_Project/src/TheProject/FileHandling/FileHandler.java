@@ -84,9 +84,9 @@ public class FileHandler {
 		     BufferedReader br = new BufferedReader(fr);
 		     	while ((line = br.readLine()) != null) {
 		     		if (line.contains(lineReplaced)) {
-		     			line = line.replace(lineReplaced, newInfo);
+		     			line = newInfo;
 		            }
-		            lines.add(line);
+		            lines.add(line + "\n");
 		        }
 		        fr.close();
 		        br.close();
