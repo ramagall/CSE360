@@ -5,8 +5,9 @@ Project Repository
   
 Used Technology:  
 &emsp;- JavaFX  
+&emsp;- CSS  
 &emsp;- File I/O  
-&emsp;- Hash Maps  
+&emsp;- Hash Maps 
 
 Contributers:  
 &emsp;- Rodolfo Magallanes Barreras  
@@ -14,10 +15,11 @@ Contributers:
 &emsp;- Ishana Jain  
 &emsp;- Matthew Hernandez  
 &emsp;- Victor De La Torre  
-
-Project Description:  
-&emsp;// go here  
-
-*OVERACHIEVER PROBLEM*
-First 950 lines of code were competed prior to April 1, 2024.
-Even contribution between all contributors.
+  
+Special Notes:  
+&emsp;- Nurse/Doctor Accounts and Records need to be hard-coded.  
+&emsp;- Assumed Scenario: Office assigns employee accounts.  
+  
+*Also...*  
+First 950 lines of code were completed prior to April 1, 2024.  
+Even contribution between all contributors.  
