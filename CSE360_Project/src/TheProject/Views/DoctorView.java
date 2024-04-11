@@ -24,14 +24,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-
+//hi
 public class DoctorView extends BorderPane{
 	 private ListView<String> patientListDV;
 	    private TextField searchedPatientFieldDV;
 	    private TabPane patientDetailsTabsDV;
 	    private ListView<String> inboxDV;
 	    private ListView<String> patientHistoryListDV;
-	    
+	    //hi
 	    int day;
 	    int month;
 	    int year;
