@@ -1,2 +1,2 @@
 AdminPatient
-AdminPatient~AdminNurse~False~You Are Cooked!~Your forehead is huge!!!
+AdminNurse~AdminPaient~False~You Are Cooked!~Your forehead is huge!!!
