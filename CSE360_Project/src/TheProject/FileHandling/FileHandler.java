@@ -105,7 +105,6 @@ public class FileHandler {
 	}
 	
 public static void FileReplace(String file, String newInfo)
-	
 	{
 		 List<String> lines = new ArrayList<String>();
 		 String line = null;
