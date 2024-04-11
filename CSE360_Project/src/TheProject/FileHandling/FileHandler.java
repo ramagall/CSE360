@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileHandler {
-	//Use the loadFile class to UserRecord data. 
+	//Use the loadFile class to UserRecord data.  
 	public static AttemptedLoad loadFile(String location) { 
 		AttemptedLoad loadResult = new AttemptedLoad();
 		File file = new File(location);
