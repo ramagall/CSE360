@@ -263,11 +263,15 @@ public class NurseView extends BorderPane {
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
     		header.append(info[i] + " ");
     	}
     	
     	String theHeader = header.toString();
     	theHeader = theHeader.substring(0, theHeader.length() - 1);
+    	System.out.println(theHeader);
     	Email theEmail = new Email();
     	
     	// Find Email: Search Records
@@ -346,6 +350,9 @@ public class NurseView extends BorderPane {
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
     	for (int i = 0; i < info.length - 1; i++) {
+    		if((i == info.length - 2) && (info[i].equals("(Not"))) {
+    			break;
+    		}
     		header.append(info[i]);
     	}
     	String theHeader = header.toString();
