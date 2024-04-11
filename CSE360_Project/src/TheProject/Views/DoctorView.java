@@ -508,7 +508,7 @@ public class DoctorView extends BorderPane{
 
         // Text Field for Allergies
         TextArea allergyArea = new TextArea();
-        allergyArea.setText("Allergies: /n" + visitDetails[6]);
+        allergyArea.setText("Allergies: " + visitDetails[6]);
         
 
         // Button for inputting allergy

@@ -71,16 +71,13 @@ public class PatientProfileView extends BorderPane {
 	    		// update patient profile in file
 	    		String fileName = "UserRecords/Patients/PatientInfo/" + username + "_info.txt";
 	    		
-	    		FileHandler.FileReplace(fileName, oldFirstName, firstName);
+	    		FileHandler.FileReplace(fileName, oldFirstName, firstName + "~" + lastName + "~" + username + "~" + password + "~" + dob + "~" + patientRecords.searchPatient(username).getInsuranceType());
 	    		patientRecords.searchPatient(username).setFirstName(firstName);
 	    		
-	    		FileHandler.FileReplace(fileName, oldLastName, lastName);
 	    		patientRecords.searchPatient(username).setlastName(lastName);
 	    		
-	    		FileHandler.FileReplace(fileName, oldDOB, dob);
 	    		patientRecords.searchPatient(username).setDOB(dob);
 	    		
-	    		FileHandler.FileReplace(fileName, oldPassword, password);
 	    		patientRecords.searchPatient(username).setPass(password);
 	    		
 	    		sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, username));

@@ -1,3 +1,1 @@
 AdminNurse
-AdminPatient~AdminNurse~False~You Are Cooked!~Your forehead is huge!!!
-Bob~AdminNurse~True~You suck~idiot

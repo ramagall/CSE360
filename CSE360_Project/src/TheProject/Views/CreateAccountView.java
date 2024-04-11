@@ -2,6 +2,9 @@
 
 import TheProject.Records.*;
 import TheProject.Users.*;
+
+import java.util.ArrayList;
+
 import TheProject.SceneViewer;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -205,6 +208,9 @@ public class CreateAccountView extends VBox {
         	newPatient.setInsuranceType(insurance.getText());
         	
         	patientRecords.createNewPatient(newPatient);
+        	ArrayList<Email> startList = new ArrayList<Email>();
+        	emailRecords.inboxList.put(newPatient.getUser(), startList);
+        	emailRecords.outboxList.put(newPatient.getUser(), startList);
         	
           sceneViewer.changeView(new PatientView(sceneViewer, emailRecords, patientRecords, newPatient.getUser()));
         }

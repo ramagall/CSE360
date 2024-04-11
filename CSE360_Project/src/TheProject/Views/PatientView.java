@@ -404,9 +404,9 @@ public class PatientView extends BorderPane {
 	    Label date = new Label(theDate);
 
 	    Label reasonFV = new Label("Reason for Visit: " + currentVisit[10]);
-	    Label Notes = new Label("Notes: ");
+	    //Label Notes = new Label("Notes: ");
 
-	    summaryOfVisit.setContent(new VBox(date, reasonFV, Notes));
+	    summaryOfVisit.setContent(new VBox(date, reasonFV));
 	    
 	    Label insurance = new Label("Insurance: " + currentUser.getInsuranceType());
 

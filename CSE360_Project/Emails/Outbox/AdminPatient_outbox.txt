@@ -1,3 +1,2 @@
 AdminPatient
-AdminNurse~AdminPatient~False~Re: You Are Cooked!~No. I'm not.
-AdminNurse~AdminPatient~True~Bad Nurse~smh
+AdminNurse~AdminPatient~False~test~tester
