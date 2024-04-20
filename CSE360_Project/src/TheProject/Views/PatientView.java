@@ -321,13 +321,14 @@ public class PatientView extends BorderPane {
 		// Find Email: Derive Header
 		String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
-    	for (int i = 0; i < info.length - 1; i++) {
+    	for (int i = 3; i < info.length; i++) {
     		if((i == info.length - 2) && (info[i].equals("(Not"))) {
     			break;
     		}
     		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
+    	System.out.println(theHeader);
     	theHeader = theHeader.substring(0, theHeader.length() - 1);
     	Email theEmail = new Email();
     	
@@ -404,9 +405,10 @@ public class PatientView extends BorderPane {
 	    Label date = new Label(theDate);
 
 	    Label reasonFV = new Label("Reason for Visit: " + currentVisit[10]);
+	    Label prescriptions = new Label("Prescriptions: " + currentVisit[9]);
 	    //Label Notes = new Label("Notes: ");
 
-	    summaryOfVisit.setContent(new VBox(date, reasonFV));
+	    summaryOfVisit.setContent(new VBox(date, reasonFV, prescriptions));
 	    
 	    Label insurance = new Label("Insurance: " + currentUser.getInsuranceType());
 

@@ -1,2 +1,3 @@
 AdminPatient
-AdminNurse~AdminPatient~False~test~tester
+AdminNurse~AdminPatient~False~cse360~testing
+AdminDoctor~AdminPatient~False~Testing Doctor~testing

@@ -1,1 +1,3 @@
 AdminDoctor
+AdminDoctor~AdminPatient~False~Testing Doctor~testing
+AdminDoctor~AdminNurse~False~This really works now~22

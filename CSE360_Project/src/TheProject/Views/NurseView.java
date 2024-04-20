@@ -349,11 +349,11 @@ public class NurseView extends BorderPane {
 		// Find Email: Derive Header
     	String[] info = newValue.split(" ");
     	StringBuilder header = new StringBuilder();
-    	for (int i = 0; i < info.length - 1; i++) {
+    	for (int i = 3; i < info.length; i++) {
     		if((i == info.length - 2) && (info[i].equals("(Not"))) {
     			break;
     		}
-    		header.append(info[i]);
+    		header.append(info[i] + " ");
     	}
     	String theHeader = header.toString();
     	theHeader = theHeader.substring(0, theHeader.length() - 1);
